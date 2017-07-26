@@ -16,16 +16,16 @@ You can turn off the search and rely on markup.
 ```
 
 # Options
-Options can be set in the variable `callsign`. The defaults are like this:
+Options can be set in the variable `callsign`. Make sure it is defined before callsign.js executes. The defaults are like this:
 ```javascript
-var callsign = new Map(
-  ['search', true],
-  ['zero', true]
-);
+var callsign = {
+  search: true,
+  zero: true
+};
 ```
 
 ## Search
-Parsing the entire document takes alot of computational cycles.
+Parsing the entire document can take alot of computational cycles. Turn it off if you don't need it.
 
 ## Zero
 Enable the replacement of 0 with 0&#x0338; in callsigns.

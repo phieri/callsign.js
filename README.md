@@ -12,18 +12,26 @@ It will then parse the document, looking for common callsign patterns.
 
 You can turn off the search and rely on markup.
 ```html
-<p>I heard <span class="callsign">SM8AYA</span> in contact with <span class="callsign">SA8YAY</span> on shortwave.</p>
+<p>I heard <span class="callsign">SM8AYA</span> and <span class="callsign">SA8YAY</span> on shortwave.</p>
 ```
 
 # Options
+Options can be set in the variable `callsign`. The defaults are like this:
+```javascript
+var callsign = new Map(
+  ['search', true],
+  ['zero', true]
+);
+```
 
-## Turn off search
+## Search
 Parsing the entire document takes alot of computational cycles.
 
-## Custom overlay
+## Zero
+Enable the replacement of 0 with 0&#x0338; in callsigns.
 
-## Replace zero
-Enable the replacement of 0 with 0&#x0338;.
+## Custom overlay
+The overlay is declared.
 
 # References
-[ITU Table of Allocation of International Call Sign Series](http://www.arrl.org/international-call-sign-series)
+[ITU Table of Allocation of International Call Sign Series](https://www.arrl.org/international-call-sign-series)

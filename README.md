@@ -2,7 +2,7 @@
 
 Add callsign.js and callsign.css to the HTML document's `head` section.
 ```html
-<link rel="stylesheet" href="callsign.css">
+<link href="callsign.css" rel="stylesheet">
 <script src="callsign.js" defer></script>
 ```
 

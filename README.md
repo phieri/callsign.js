@@ -1,7 +1,8 @@
 # callsign.js
 
-Add callsign.js to the HTML document's `head` section.
+Add callsign.js and callsign.css to the HTML document's `head` section.
 ```html
+<link rel="stylesheet" href="stil.css">
 <script src="callsign.js" defer></script>
 ```
 
@@ -10,7 +11,7 @@ It will then parse the document, looking for common callsign patterns.
 <p>I heard SM8AYA in contact with SA8YAY on shortwave.</p>
 ```
 
-You can turn off the search and rely on markup.
+You can turn off the pattern search and rely on markup.
 ```html
 <p>I heard <span class="callsign">SM8AYA</span> and <span class="callsign">SA8YAY</span> on shortwave.</p>
 ```

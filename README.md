@@ -26,14 +26,10 @@ var callsign = {
 };
 ```
 
-## Search
-Parsing the entire document can take alot of computational cycles. Turn it off if you don't need it.
-
-## Zero
-Enable the replacement of 0 with 0&#x0338; in callsigns.
-
-## Custom overlay
-The overlay is declared.
+| Name | Description |
+| --- | --- |
+| search | Parsing the entire document can take alot of computational cycles. Turn it off if you don't need it. |
+| zero | Enable the replacement of 0 with 0&#x0338; in callsigns. |
 
 # References
 [ITU Table of Allocation of International Call Sign Series](https://www.arrl.org/international-call-sign-series)

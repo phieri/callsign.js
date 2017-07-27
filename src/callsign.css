@@ -2,3 +2,9 @@
   background-color: #ddd;
   border-radius: 3px;
 }
+
+dialog {
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+}

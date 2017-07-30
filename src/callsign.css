@@ -1,6 +1,8 @@
 .callsign {
-  background-color: #ddd;
-  border-radius: 3px;
+  background-color: #eee;
+  border-radius: 2px;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
 }
 
 dialog {

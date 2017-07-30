@@ -21,6 +21,7 @@ You can turn off the pattern search and rely on markup.
 Options can be set in the variable `callsign`. Make sure it is defined before callsign.js executes. The defaults are like this:
 ```javascript
 var callsign = {
+  flag: true,
   search: true,
   zero: true
 };
@@ -28,8 +29,9 @@ var callsign = {
 
 | Name | Description |
 | --- | --- |
+| flag | Show the country flag before the call sign. |
 | search | Parsing the entire document can take alot of computational cycles. Turn it off if you don't need it. |
-| zero | Enable the replacement of 0 with 0&#x0338; in callsigns. |
+| zero | Enable the replacement of 0 with 0&#x0338; in call signs. |
 
 # References
 [ITU Table of Allocation of International Call Sign Series](https://www.arrl.org/international-call-sign-series)

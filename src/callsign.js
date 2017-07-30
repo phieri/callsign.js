@@ -8,6 +8,4 @@ function csParser() {
 
   const csregex = /\D{1,3}\d\D{1,3}/;
 
-  let dialog = document.createElement("dialog");
-  document.body.appendChild(dialog);
 }

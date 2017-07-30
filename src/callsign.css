@@ -1,12 +1,4 @@
 .callsign {
-  background-color: #eee;
-  border-radius: 2px;
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
-}
-
-dialog {
-  background-color: #fff;
-  color: #333;
-  border-radius: 5px;
+  letter-spacing: 0.05em;
+  border-left: 2px solid #555;
 }

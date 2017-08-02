@@ -18,9 +18,9 @@ You can turn off the pattern search and rely on markup.
 ```
 
 # Options
-Options can be set in the variable `callsign`. Make sure it is defined before callsign.js executes. The defaults are like this:
+Options can be set in the variable `csettings`. Make sure it is defined before callsign.js executes. The defaults are like this:
 ```javascript
-var callsign = {
+var csettings = {
   flag: true,
   search: true,
   zero: true

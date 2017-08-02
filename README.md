@@ -30,7 +30,7 @@ var csettings = {
 | Name | Description |
 | --- | --- |
 | flag | Show the country flag before the call sign. |
-| search | Parsing the entire document can take alot of computational cycles. Turn it off if you don't need it. |
+| search | Parse the entire document for text patterns.<p>⚠️ Potentially CPU intense. Turn it off if not needed. |
 | zero | Replace 0 with 0&#x0338; in call signs. |
 
 # References

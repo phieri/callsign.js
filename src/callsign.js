@@ -3,47 +3,74 @@
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
  */
 
-const prefixTable = {
+const ItuPrefixTable = {
   "SA–SM": "SE",
   "DA–DR": "DE",
   "EM–EO": "UA"
 };
 
+/**
+ * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
+ * @param code
+ * @return Emoji
+ */
 function flag(code) {
-  "use strict";
+  'use strict';
   return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397))
 }
 
+/**
+ * Checks if a character combination is inside a specified range.
+ * @param val
+ * @param ran
+ * @return bool
+ */
+function inRange(val, ran) {
+  'use strict';
+  let split = ran.split("–");
+
+  if (val.length != split[0].length)
+    return false;
+
+  if (split.length === 1 && split[0] == val)
+    return true;
+}
+
 function examine(text) {
-  "use strict";
+  'use strict';
   console.log(text);
 }
 
 function traverse(ele) {
-  "use strict";
+  'use strict';
   if (ele.childNodes.length == 0) {
     examine(ele.textContent);
   } else if (ele.childNodes.length >= 1) {
-    ele.childNodes.forEach(function(nodess) {
+    ele.childNodes.forEach(function (nodess) {
       traverse(nodess);
     });
   }
 }
 
 function callsign() {
-  "use strict";
-  performance.mark("callsign-start");
+  'use strict';
+
+  if (csettings !== null && csettings.measure == true) {
+    performance.mark("callsign-start");
+  }
 
   const csregex = /\D{1,3}\d\D{1,3}/;
   traverse(document.body);
 
-  performance.mark("callsign-done");
-  performance.measure("callsign", "callsign-start", "callsign-done");
-  let measures = performance.getEntriesByName("callsign");
-  let measure = measures[0];
-  console.log('callsign.js execution took ', measure.duration);
-  performance.clearMarks();
-  performance.clearMeasures();
+  if (csettings !== null && csettings.measure == true) {
+    performance.mark("callsign-done");
+    performance.measure("callsign", "callsign-start", "callsign-done");
+    let measures = performance.getEntriesByName("callsign");
+    let measure = measures[0];
+    console.log('callsign.js execution took ', measure.duration);
+    performance.clearMarks();
+    performance.clearMeasures();
+  }
 }
 
 callsign();

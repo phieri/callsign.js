@@ -4,3 +4,8 @@
   color: #222;
   font-family: monospace;
 }
+
+.cflag {
+  border-right: none;
+  background-color: inherit;
+}

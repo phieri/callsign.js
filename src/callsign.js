@@ -5,21 +5,22 @@
 
 const ItuPrefixTable = {
   AL: "ZA",
-  AR: "AY–AZ",
-  AR: "LO–LW",
+  AR: "AY-AZ,LO-LW",
   AT: "OE",
-  DE: "DA–DR",
-  ES: "EA–EH",
-  FI: "OF–OJ",
+  BR: "PP-PY,ZV-ZZ",
+  DE: "DA-DR",
+  ES: "EA-EH",
+  FI: "OF-OJ",
+  HU: "HA,HG",
   IS: "TF",
-  JP: "JA–JS",
-  NO: "LA–LN",
-  PL: "SN–SR",
-  RO: "YO–YR",
-  SE: "SA–SM",
-  UA: "EM–EO",
-  UA: "UR–UZ",
-  ZA: "ZR–ZU"
+  JP: "JA-JS",
+  NO: "LA-LN",
+  PL: "HF,SN-SR",
+  RO: "YO-YR",
+  SE: "SA-SM",
+  TH: "HS",
+  UA: "EM-EO,UR-UZ",
+  ZA: "ZR-ZU"
 };
 
 /**
@@ -40,7 +41,7 @@ function flag(code) {
  */
 function inRange(value, range) {
   'use strict';
-  let split = ran.split("–");
+  let split = ran.split("-");
 
   if (val.length != split[0].length)
     return false;

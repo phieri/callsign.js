@@ -1,8 +1,9 @@
 /**
- * callsign.js
+ * @file callsign.js
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
  */
 
+/** @constant */
 const ItuPrefixTable = {
   AL: "ZA",
   AR: "AY-AZ,LO-LW",
@@ -25,7 +26,7 @@ const ItuPrefixTable = {
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
- * @param code
+ * @param {string} code
  * @returns {string}
  */
 function flag(code) {
@@ -35,8 +36,8 @@ function flag(code) {
 
 /**
  * Checks if a character combination is inside a specified range.
- * @param value
- * @param range
+ * @param {string} value
+ * @param {string} range
  * @returns {boolean}
  */
 function inRange(value, range) {

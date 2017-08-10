@@ -4,15 +4,22 @@
  */
 
 const ItuPrefixTable = {
-  "SA–SM": "SE",
-  "DA–DR": "DE",
-  "EM–EO": "UA"
+  AT: "OE",
+  DE: "DA–DR",
+  ES: "EA–EH",
+  FI: "OF–OJ",
+  IS: "TF",
+  NO: "LA–LN",
+  PL: "SN–SR",
+  SE: "SA–SM",
+  UA: "EM–EO",
+  UA: "UR–UZ"
 };
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
  * @param code
- * @return Emoji
+ * @returns {string}
  */
 function flag(code) {
   'use strict';
@@ -21,11 +28,11 @@ function flag(code) {
 
 /**
  * Checks if a character combination is inside a specified range.
- * @param val
- * @param ran
- * @return bool
+ * @param value
+ * @param range
+ * @returns {boolean}
  */
-function inRange(val, ran) {
+function inRange(value, range) {
   'use strict';
   let split = ran.split("–");
 

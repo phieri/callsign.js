@@ -4,16 +4,22 @@
  */
 
 const ItuPrefixTable = {
+  AL: "ZA",
+  AR: "AY–AZ",
+  AR: "LO–LW",
   AT: "OE",
   DE: "DA–DR",
   ES: "EA–EH",
   FI: "OF–OJ",
   IS: "TF",
+  JP: "JA–JS",
   NO: "LA–LN",
   PL: "SN–SR",
+  RO: "YO–YR",
   SE: "SA–SM",
   UA: "EM–EO",
-  UA: "UR–UZ"
+  UA: "UR–UZ",
+  ZA: "ZR–ZU"
 };
 
 /**

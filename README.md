@@ -22,6 +22,7 @@ Options can be set in the variable `csettings`. Make sure it's defined before ca
 ```javascript
 var csettings = {
   flag: true,
+  measure: true,
   search: true,
   zero: true
 };
@@ -30,6 +31,7 @@ var csettings = {
 | Name | Description |
 | --- | --- |
 | flag | Show the country flag before the call sign. |
+| measure | Write performance information to the browser console. |
 | search | Parse the entire document for text patterns.<br>⚠️ Potentially CPU intense. Turn off if not needed. |
 | zero | Replace 0 with 0&#x0338; in call signs. |
 

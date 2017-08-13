@@ -10,6 +10,8 @@ const ITU_PREFIX_TABLE = {
   AR: "AY-AZ,LO-LW",
   AT: "OE",
   BR: "PP-PY,ZV-ZZ",
+  CA: "CF-CK,CY-CZ,VA-VG,VO,VX-VY,XJ-XO",
+  CH: "HB,HE",
   DE: "DA-DR",
   DK: "OU-OZ,XP",
   ES: "EA-EH",
@@ -19,13 +21,16 @@ const ITU_PREFIX_TABLE = {
   HU: "HA,HG",
   IS: "TF",
   JP: "JA-JS",
+  NL: "PA-PI,PJ",
   NO: "LA-LN",
   PL: "HF,SN-SR",
   RO: "YO-YR",
   RU: "R,UA-UI",
   SE: "SA-SM",
+  SK: "OM",
   TH: "HS",
   UA: "EM-EO,UR-UZ",
+  US: "AA-AL,K,N,W",
   ZA: "ZR-ZU"
 };
 

@@ -5,7 +5,7 @@
  */
 
 /** @constant */
-const ItuPrefixTable = {
+const ITU_PREFIX_TABLE = {
   AL: "ZA",
   AR: "AY-AZ,LO-LW",
   AT: "OE",
@@ -36,7 +36,7 @@ const ItuPrefixTable = {
  */
 function flag(code) {
   'use strict';
-  return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397))
+  return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
 }
 
 /**
@@ -47,12 +47,12 @@ function flag(code) {
  */
 function inRange(value, range) {
   'use strict';
-  let split = ran.split("-");
+  let split = range.split("-");
 
-  if (val.length != split[0].length)
+  if (value.length != split[0].length)
     return false;
 
-  if (split.length === 1 && split[0] == val)
+  if (split.length === 1 && split[0] == value)
     return true;
 }
 
@@ -61,16 +61,16 @@ function examine(text) {
   console.log(text);
 }
 
-function traverse(ele) {
 /**
  * Recursive method to traverse the DOM tree.
  * @param {object} element
  */
+function traverse(element) {
   'use strict';
-  if (ele.childNodes.length == 0) {
-    examine(ele.textContent);
-  } else if (ele.childNodes.length >= 1) {
-    ele.childNodes.forEach(function (nodess) {
+  if (element.childNodes.length == 0) {
+    examine(element.textContent);
+  } else if (element.childNodes.length >= 1) {
+    element.childNodes.forEach(function (nodess) {
       traverse(nodess);
     });
   }

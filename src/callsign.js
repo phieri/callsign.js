@@ -54,12 +54,12 @@ function flag(code) {
  */
 function inRange(value, range) {
   'use strict';
-  let split = range.split("-");
+  let split = range.split('-');
 
   if (value.length != split[0].length)
     return false;
 
-  if (split.length === 1 && split[0] == value)
+  if (split.length == 1 && split[0] == value)
     return true;
 }
 
@@ -94,7 +94,11 @@ function callsign() {
   }
 
   const csregex = /\D{1,3}\d\D{1,3}/;
-  traverse(document.body);
+  if (csettings !== null && csettings.search == true) {
+    traverse(document.body);
+  }
+
+  myCElements = document.getElementsByTagName('callsign');
 
   if (csettings !== null && csettings.measure == true) {
     performance.mark("callsign-done");

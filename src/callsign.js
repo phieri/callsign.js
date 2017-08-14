@@ -63,6 +63,9 @@ function inRange(value, range) {
     return true;
 }
 
+/**
+ * @param {string} text
+ */
 function examine(text) {
   'use strict';
   console.log(text);

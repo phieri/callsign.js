@@ -36,6 +36,9 @@ const ITU_PREFIX_TABLE = {
   ZA: "ZR-ZU"
 };
 
+/** @constant */
+const csregex = /\D{1,3}\d\D{1,3}/;
+
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
  * @param {string} code
@@ -89,18 +92,22 @@ function traverse(element) {
 function callsign() {
   'use strict';
 
-  if (csettings !== null && csettings.measure == true) {
+  if (csettings.measure == null || csettings.measure == true) {
     performance.mark("callsign-start");
   }
 
-  const csregex = /\D{1,3}\d\D{1,3}/;
-  if (csettings !== null && csettings.search == true) {
+  if (csettings.search == null || csettings.search == true) {
     traverse(document.body);
   }
 
-  myCElements = document.getElementsByTagName('callsign');
+  if (csettings.flag == null || csettings.flag == true) {
+    callsignElements = document.getElementsByClassName('callsign');
+    for (let i = 0; i < callsignElements.length; i++) {
+      
+    }
+  }
 
-  if (csettings !== null && csettings.measure == true) {
+  if (csettings.measure == null || csettings.measure == true) {
     performance.mark("callsign-done");
     performance.measure("callsign", "callsign-start", "callsign-done");
     let measures = performance.getEntriesByName("callsign");

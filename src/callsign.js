@@ -1,6 +1,6 @@
 /**
  * @file Highlight amateur radio call signs in web pages with this JavaScript library
- * @author Philip Eriksson <philiperiksson.se>
+ * @author Philip Eriksson <www.philiperiksson.se>
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
  */
 
@@ -80,7 +80,7 @@ function examine(text) {
 
 /**
  * Recursive method to traverse the DOM tree.
- * @param {object} element
+ * @param {Element} element
  */
 function traverse(element) {
   'use strict';

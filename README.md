@@ -1,5 +1,7 @@
 # callsign.js
+This JavaScript library gives website users more ways to interract with written amateur radio callsigns.
 
+# Usage
 Add callsign.js and callsign.css to the HTML document's `head` section.
 ```html
 <link href="callsign.css" rel="stylesheet">
@@ -16,6 +18,8 @@ You can turn off the pattern search and rely on markup.
 ```html
 <p>I heard <callsign>SM8AYA</callsign> and <callsign>SA8YAY</callsign> on shortwave.</p>
 ```
+
+Please consider using the JavaScript file unminified for openness and to promote education.
 
 # Options
 Options can be set in the variable `csettings`. Make sure it's defined before callsign.js executes. The defaults are like this:

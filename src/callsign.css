@@ -1,11 +1,19 @@
-callsign {
-  border: 1px solid #bbb;
-  background-color: #eee;
-  color: #222;
+callsign,
+.callsign-flag {
+  padding-top: 2px;
+  border: 1px solid #ddd;
   font-family: monospace;
 }
 
-.cflag {
+callsign {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  color: #222;
+  background-color: #eee;
+}
+
+.callsign-flag {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
   border-right: none;
-  background-color: inherit;
 }

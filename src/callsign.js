@@ -41,7 +41,7 @@ const ITU_PREFIX_TABLE = {
 };
 
 /** @constant */
-const csregex = /\D{1,3}\d\D{1,3}/;
+const CALLSIGN_REGEX = /\D{1,3}\d\D{1,3}/;
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
@@ -66,8 +66,16 @@ function inRange(value, range) {
   if (value.length != split[0].length)
     return false;
 
+  if (split[0] == split[1])
+    return false;
+
   if (split.length == 1 && split[0] == value)
     return true;
+
+  if (split[0]) {
+    let newRange = split[1];
+    return inRange(value, newRange);
+  }
 }
 
 /**
@@ -87,8 +95,8 @@ function traverse(element) {
   if (element.childNodes.length == 0) {
     examine(element.textContent);
   } else if (element.childNodes.length >= 1) {
-    element.childNodes.forEach(function (nodess) {
-      traverse(nodess);
+    element.childNodes.forEach(function (nodes) {
+      traverse(nodes);
     });
   }
 }

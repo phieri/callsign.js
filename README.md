@@ -14,7 +14,7 @@ Here `SM8AYA` and `SA8YAY` will be identified.
 
 You can turn off the pattern search and rely on markup.
 ```html
-<p>I heard <span class="callsign">SM8AYA</span> and <span class="callsign">SA8YAY</span> on shortwave.</p>
+<p>I heard <callsign>SM8AYA</callsign> and <callsign>SA8YAY</callsign> on shortwave.</p>
 ```
 
 # Options

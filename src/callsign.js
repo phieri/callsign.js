@@ -113,7 +113,7 @@ function callsign() {
   }
 
   if (csettings.flag == null || csettings.flag == true) {
-    callsignElements = document.getElementsByClassName('callsign');
+    let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
       for (let row in ITU_PREFIX_TABLE) {
         if (inRange(callsignElements[i], row)) {

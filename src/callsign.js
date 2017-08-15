@@ -106,7 +106,9 @@ function callsign() {
   'use strict';
 
   if (csettings.debug == null || csettings.debug == true) {
-    performance.mark("callsign-start");
+    if (document.performance != null) {
+      performance.mark("callsign-start");
+    }
   }
 
   if (csettings.search == null || csettings.search == true) {
@@ -132,13 +134,15 @@ function callsign() {
   }
 
   if (csettings.debug == null || csettings.debug == true) {
-    performance.mark("callsign-done");
-    performance.measure("callsign", "callsign-start", "callsign-done");
-    let measures = performance.getEntriesByName("callsign");
-    let measure = measures[0];
-    console.log('callsign.js execution took', measure.duration);
-    performance.clearMarks();
-    performance.clearMeasures();
+    if (document.performance != null) {
+      performance.mark("callsign-done");
+      performance.measure("callsign", "callsign-start", "callsign-done");
+      let measures = performance.getEntriesByName("callsign");
+      let measure = measures[0];
+      console.log('callsign.js execution took', measure.duration);
+      performance.clearMarks();
+      performance.clearMeasures();
+    }
   }
 }
 

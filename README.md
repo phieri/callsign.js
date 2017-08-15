@@ -14,12 +14,12 @@ It will then parse the document, looking for common callsign patterns.
 ```
 Here `SM8AYA` and `SA8YAY` will be identified.
 
-You can turn off the pattern search and rely on markup.
+You can turn off the pattern search and rely on markup through the HTML tag `callsign`.
 ```html
 <p>I heard <callsign>SM8AYA</callsign> and <callsign>SA8YAY</callsign> on shortwave.</p>
 ```
 
-Please consider using the JavaScript file unminified for openness and to promote education.
+Please consider using the files unminified for openness and to promote education.
 
 # Options
 Options can be set in the variable `csettings`. Make sure it's defined before callsign.js executes. The defaults are like this:
@@ -34,8 +34,8 @@ var csettings = {
 
 | Name | Description |
 | --- | --- |
-| debug | Write performance information to the browser console. |
-| flag | Show the country flag before the call sign. |
+| debug | Write various information to the browser console. |
+| flag | Show country flag before the call sign. |
 | search | Parse the entire document for text patterns.<br>⚠️ Potentially CPU intense. Turn off if not needed. |
 | zero | Replace 0 with 0&#x0338; in call signs. |
 

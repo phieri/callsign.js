@@ -45,7 +45,7 @@ const CALLSIGN_REGEX = /\D{1,3}\d\D{1,3}/;
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
- * @param {string} code
+ * @param {!string} code
  * @returns {string}
  */
 function flag(code) {
@@ -55,8 +55,8 @@ function flag(code) {
 
 /**
  * Checks if a character combination is inside a specified range.
- * @param {string} value
- * @param {string} range
+ * @param {!string} value
+ * @param {!string} range
  * @returns {boolean}
  */
 function inRange(value, range) {
@@ -88,7 +88,7 @@ function examine(text) {
 
 /**
  * Recursive method to traverse the DOM tree.
- * @param {Element} element
+ * @param {!Element} element
  */
 function traverse(element) {
   'use strict';

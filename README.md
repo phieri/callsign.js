@@ -21,8 +21,8 @@ You can turn off the pattern search and rely on markup.
 Options can be set in the variable `csettings`. Make sure it's defined before callsign.js executes. The defaults are like this:
 ```javascript
 var csettings = {
+  debug: false,
   flag: true,
-  measure: true,
   search: true,
   zero: true
 };

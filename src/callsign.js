@@ -63,7 +63,7 @@ function inRange(value, range) {
   'use strict';
   let split = range.split('-');
 
-  if (value.length != split[0].length)
+  if (value.length < split[0].length)
     return false;
 
   if (split[0] == split[1])
@@ -115,7 +115,11 @@ function callsign() {
   if (csettings.flag == null || csettings.flag == true) {
     callsignElements = document.getElementsByClassName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
-      
+      for (let row in ITU_PREFIX_TABLE) {
+        if (inRange(callsignElements[i], row)) {
+          alert('Hit!');
+        }
+      }
     }
   }
 

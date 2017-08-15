@@ -104,7 +104,7 @@ function traverse(element) {
 function callsign() {
   'use strict';
 
-  if (csettings.measure == null || csettings.measure == true) {
+  if (csettings.debug == null || csettings.debug == true) {
     performance.mark("callsign-start");
   }
 
@@ -123,7 +123,7 @@ function callsign() {
     }
   }
 
-  if (csettings.measure == null || csettings.measure == true) {
+  if (csettings.debug == null || csettings.debug == true) {
     performance.mark("callsign-done");
     performance.measure("callsign", "callsign-start", "callsign-done");
     let measures = performance.getEntriesByName("callsign");

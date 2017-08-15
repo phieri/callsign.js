@@ -30,8 +30,8 @@ var csettings = {
 
 | Name | Description |
 | --- | --- |
+| debug | Write performance information to the browser console. |
 | flag | Show the country flag before the call sign. |
-| measure | Write performance information to the browser console. |
 | search | Parse the entire document for text patterns.<br>⚠️ Potentially CPU intense. Turn off if not needed. |
 | zero | Replace 0 with 0&#x0338; in call signs. |
 

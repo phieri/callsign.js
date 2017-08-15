@@ -63,14 +63,14 @@ function inRange(value, range) {
   'use strict';
   let split = range.split('-');
 
+  if (split.length == 1 && split[0] == value)
+    return true;
+
   if (value.length < split[0].length)
     return false;
 
   if (split[0] == split[1])
     return false;
-
-  if (split.length == 1 && split[0] == value)
-    return true;
 
   if (split[0]) {
     let newRange = split[1];
@@ -83,6 +83,7 @@ function inRange(value, range) {
  */
 function examine(text) {
   'use strict';
+  let CALLSIGN_REGEX;
   console.log(text);
 }
 
@@ -92,12 +93,13 @@ function examine(text) {
  */
 function traverse(element) {
   'use strict';
-  if (element.childNodes.length == 0) {
+  if (element.children.length == 0) {
     examine(element.textContent);
-  } else if (element.childNodes.length >= 1) {
-    element.childNodes.forEach(function (nodes) {
-      traverse(nodes);
-    });
+  } else if (element.children.length >= 1) {
+    for (let i = 0; i < element.children.length; i++) {
+      //console.log(element.children[i]);
+      traverse(element.children[i]);
+    }
   }
 }
 
@@ -113,10 +115,13 @@ function callsign() {
   }
 
   if (csettings.flag == null || csettings.flag == true) {
+    let ITU_PREFIX_TABLE;
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
+      if (csettings.debug == true)
+        console.log("Found callsign:", callsignElements[i].innerHTML);
       for (let row in ITU_PREFIX_TABLE) {
-        if (inRange(callsignElements[i], row)) {
+        if (inRange(callsignElements[i].innerHTML, ITU_PREFIX_TABLE[row])) {
           alert('Hit!');
         }
       }

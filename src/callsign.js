@@ -41,7 +41,7 @@ const ITU_PREFIX_TABLE = {
 };
 
 /** @constant */
-const CALLSIGN_REGEX = /(\D{1,3})\d\D{1,3}/;
+const CALLSIGN_REGEX = /(\d?\D{1,3})\d\D{1,3}/;
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.

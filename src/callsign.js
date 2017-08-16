@@ -83,7 +83,7 @@ function inRange(value, range) {
  */
 function examine(text) {
   'use strict';
-  console.log(text);
+  //console.log(text);
 }
 
 /**
@@ -96,7 +96,6 @@ function traverse(element) {
     examine(element.textContent);
   } else if (element.children.length >= 1) {
     for (let i = 0; i < element.children.length; i++) {
-      //console.log(element.children[i]);
       traverse(element.children[i]);
     }
   }
@@ -104,10 +103,14 @@ function traverse(element) {
 
 function callsign() {
   'use strict';
+  if (document.console == null)
+    csettings.debug = false;
 
   if (csettings.debug == null || csettings.debug == true) {
     if (document.performance != null) {
       performance.mark("callsign-start");
+    } else {
+      console.log('Performance API not supported by this browser.');
     }
   }
 
@@ -122,13 +125,15 @@ function callsign() {
         console.log("Found callsign:", callsignElements[i].innerHTML);
       for (let row in ITU_PREFIX_TABLE) {
         let prefix = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
-        console.log(prefix[1], ITU_PREFIX_TABLE[row]);
         if (inRange(prefix[1], ITU_PREFIX_TABLE[row])) {
           let flagElement = document.createElement('span');
           flagElement.setAttribute('class', 'callsign-flag');
           flagElement.innerHTML = flag(row);
           callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
         }
+      }
+      if (csettings.zero == null || csettings.zero == true) {
+        callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
       }
     }
   }

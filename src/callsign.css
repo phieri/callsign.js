@@ -1,5 +1,6 @@
 callsign,
 .callsign-flag {
+  display: inline;
   border: 1px solid #ddd;
   font-family: monospace;
 }
@@ -12,7 +13,7 @@ callsign {
 }
 
 .callsign-flag {
+  border-right: none;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
-  border-right: none;
 }

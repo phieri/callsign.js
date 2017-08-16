@@ -103,6 +103,8 @@ function traverse(element) {
 
 function callsign() {
   'use strict';
+  if (csettings == null)
+    var csettings = {};
   if (document.console == null)
     csettings.debug = false;
 

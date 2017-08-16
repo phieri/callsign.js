@@ -105,6 +105,7 @@ function callsign() {
   'use strict';
   if (csettings == null)
     var csettings = {};
+
   if (document.console == null)
     csettings.debug = false;
 
@@ -116,10 +117,12 @@ function callsign() {
     }
   }
 
+  // Walk the DOM tree and add callsign tag to matching strings
   if (csettings.search == null || csettings.search == true) {
     traverse(document.body);
   }
 
+  // Go through all callsign elements and apply flag and strike through zero
   if (csettings.flag == null || csettings.flag == true) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {

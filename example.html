@@ -12,6 +12,7 @@
       search: true,
       zero: true
     };
+
   </script>
   <script src="src/callsign.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,10 +20,19 @@
 
 <body>
   <h1>callsign.js example page</h1>
-  <p>Here comes a callsign which is marked up: <callsign>ZA9OOO</callsign> adipiscing elit.</p>
+  <pre>
+var csettings = {
+  debug: true,
+  flag: true,
+  search: true,
+  zero: true
+};</pre>
+  <p>Here comes a callsign which is marked up:
+    <callsign>ZA9OOO</callsign> adipiscing elit.</p>
   <p>Here comes a callsign which is not marked up: SA59BC lorem ipsum</p>
   <p>Here comes a callsign which is not marked up but wrapped in another tag <b>SL9ZZZ</b> nec odio.</p>
-  <p>Here comes a callsign which is marked up and contains a zero: <callsign>TF0ZAS</callsign> Mauris massa. <b>Vestibulum</b> lacinia arcu eget nulla.</p>
+  <p>Here comes a callsign which is marked up and contains a zero:
+    <callsign>OM0ZAS</callsign>. Mauris massa. <b>Vestibulum</b> lacinia arcu eget nulla.</p>
 </body>
 
 </html>

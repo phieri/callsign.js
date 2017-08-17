@@ -110,6 +110,8 @@ function callsign() {
     csettings.debug = true;
   if (window.console == null)
     csettings.debug = false;
+  if (csettings.zero == null)
+    csettings.zero = true;
 
   if (csettings.debug) {
     if (window.performance !== null) {
@@ -140,7 +142,7 @@ function callsign() {
           callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
         }
       }
-      if (csettings.zero == null || csettings.zero == true) {
+      if (csettings.zero) {
         callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
       }
     }

@@ -1,5 +1,6 @@
 /**
  * @file Highlight amateur radio call signs in web pages with this JavaScript library
+ * @version 0.0.1-alpha
  * @author Philip Eriksson <www.philiperiksson.se>
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
  */

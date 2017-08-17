@@ -105,19 +105,20 @@ function callsign() {
   'use strict';
   if (csettings == null)
     var csettings = {};
-
-  if (document.console == null)
+  if (csettings.debug == null)
+    csettings.debug = true;
+  if (window.console == null)
     csettings.debug = false;
 
-  if (csettings.debug == null || csettings.debug == true) {
-    if (document.performance != null) {
+  if (csettings.debug) {
+    if (window.performance !== null) {
       performance.mark("callsign-start");
     } else {
-      console.log('Performance API not supported by this browser.');
+      alert('Performance API not available');
     }
   }
 
-  // Walk the DOM tree and add callsign tag to matching strings
+  // Traverse the DOM tree and add callsign tag to matching strings
   if (csettings.search == null || csettings.search == true) {
     traverse(document.body);
   }
@@ -126,13 +127,14 @@ function callsign() {
   if (csettings.flag == null || csettings.flag == true) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
-      if (csettings.debug == true)
+      if (csettings.debug)
         console.log("Found callsign:", callsignElements[i].innerHTML);
       for (let row in ITU_PREFIX_TABLE) {
         let prefix = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
         if (inRange(prefix[1], ITU_PREFIX_TABLE[row])) {
           let flagElement = document.createElement('span');
           flagElement.setAttribute('class', 'callsign-flag');
+          flagElement.setAttribute('title', row);
           flagElement.innerHTML = flag(row);
           callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
         }
@@ -143,8 +145,8 @@ function callsign() {
     }
   }
 
-  if (csettings.debug == null || csettings.debug == true) {
-    if (document.performance != null) {
+  if (csettings.debug) {
+    if (window.performance != null) {
       performance.mark("callsign-done");
       performance.measure("callsign", "callsign-start", "callsign-done");
       let measures = performance.getEntriesByName("callsign");

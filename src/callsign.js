@@ -114,10 +114,11 @@ function callsign() {
     var csettings = {};
   if (csettings.debug == null)
     csettings.debug = true;
-  if (window.console == null)
-    csettings.debug = false;
   if (csettings.zero == null)
     csettings.zero = true;
+
+  if (window.console == null)
+    csettings.debug = false;
 
   if (csettings.debug) {
     if (window.performance !== null) {

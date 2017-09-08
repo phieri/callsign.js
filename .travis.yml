@@ -3,5 +3,8 @@ language: javascript
 install:
   - npm install -g eslint
 
+before_script:
+  - eslint --init
+
 script:
   - eslint src/callsign.js

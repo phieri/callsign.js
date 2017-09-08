@@ -1,7 +1,7 @@
 language: javascript
 
 install:
-  - npm install -g eslint
+  - npm install -g eslint uglify-es
 
 script:
-  - eslint src/callsign.js
+  - eslint src/

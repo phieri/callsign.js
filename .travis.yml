@@ -1,0 +1,7 @@
+language: javascript
+
+install:
+  - npm install -g eslint
+
+script:
+  - eslint src/callsign.js

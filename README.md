@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Lominean/callsign.js.svg?branch=master)](https://travis-ci.org/Lominean/callsign.js)
+
 # callsign.js
 This JavaScript library gives website users more ways to interract with written amateur radio callsigns.
 

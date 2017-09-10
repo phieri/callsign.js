@@ -1,20 +1,20 @@
 language: javascript
 
 install:
-  - npm install -g eslint csslint
+  - npm install -g eslint csslint uglify-es
 
 script:
   - eslint src/*.js
   - csslint src/*.css
 
-before_deploy:
-  - apt-get install -y zip
-  - npm install -g uglify-es
+after_script:
+  - zip callsign.zip src/*
 
 deploy:
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
-  file: "callsign.min.zip"
+  api_key:
+    secure: lkjnsdflnsdlkklsndflnsdflknsfdlkn
+  file: "callsign.zip"
   skip_cleanup: true
   on:
     tags: true

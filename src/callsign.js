@@ -1,6 +1,6 @@
 /**
  * @file Highlight amateur radio call signs in web pages with this JavaScript library
- * @version 0.0.1-alpha
+ * @version 0.1.0
  * @author Philip Eriksson <www.philiperiksson.se>
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
  */
@@ -52,7 +52,7 @@ const CALLSIGN_REGEX = /(\d?\D{1,3})\d\D{1,3}/;
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
- * @param {!string} code
+ * @param {!string} code The ISO 3166-1 alpha-2 code
  * @returns {string}
  */
 function flag(code) {

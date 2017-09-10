@@ -4,8 +4,8 @@ install:
   - npm install -g eslint csslint
 
 script:
-  - eslint src/*
-  - csslint src/*
+  - eslint src/*.js
+  - csslint src/*.css
 
 before_deploy:
   - apt-get install -y zip

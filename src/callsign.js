@@ -112,9 +112,9 @@ function callsign() {
 
   if (csettings.debug) {
     if (window.performance !== null) {
-      performance.mark("callsign-start");
+      performance.mark("cs-start");
     } else {
-      alert('Performance API not available');
+      console.error('Performance API n/a');
     }
   }
 
@@ -142,11 +142,11 @@ function callsign() {
 
   if (csettings.debug) {
     if (window.performance != null) {
-      performance.mark("callsign-done");
-      performance.measure("callsign", "callsign-start", "callsign-done");
+      performance.mark("cs-done");
+      performance.measure("callsign", "cs-start", "cs-done");
       let measures = performance.getEntriesByName("callsign");
       let measure = measures[0];
-      console.log('callsign.js execution took', measure.duration);
+      console.log('callsign.js exec took', measure.duration);
       performance.clearMarks();
       performance.clearMeasures();
     }

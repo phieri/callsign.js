@@ -23,6 +23,7 @@ const ITU_PREFIX_TABLE = {
   ES: 'AM-AO,EA-EH',
   FI: 'OF-OJ',
   FR: 'F,HW-HY',
+  GA: 'TR',
   GB: 'G,M,VP-VQ,VS,ZB-ZJ,ZN-ZO,ZQ',
   GQ: '3C',
   HI: '4V',
@@ -35,6 +36,7 @@ const ITU_PREFIX_TABLE = {
   KR: 'DS-DT,HL',
   LT: 'LY',
   MC: '3A',
+  ML: 'TZ',
   MU: '3B',
   NL: 'PA-PI,PJ',
   NO: 'LA-LN',
@@ -53,7 +55,7 @@ const ITU_PREFIX_TABLE = {
 };
 
 /** @constant */
-const CALLSIGN_REGEX = /(\d?\D{1,3})\d\D{1,3}/;
+const CALLSIGN_REGEX = /(\d?\D{1,3})\d\D{1,3}(\/\D{1,3})?/;
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
@@ -85,8 +87,8 @@ function inRange(value, range) {
     return false;
 
   let newRange = split[0];
-  let c = newRange.charCodeAt(0);
-  switch (c) {
+  let character = newRange.charCodeAt(0);
+  switch (character) {
     case 90:
       newRange = 'A';
     default:
@@ -98,7 +100,7 @@ function inRange(value, range) {
 /**
  * Expand the letter intervals.
  */
-function expand() {
+function expandTable() {
   'use strict';
   //console.log(text);
 }
@@ -115,14 +117,16 @@ function callsign() {
 
   if (cset.debug) {
     if (window.performance !== null) {
-      performance.mark("cs-start");
+      performance.mark('cs-start');
     } else {
       console.error('Performance API n/a');
     }
   }
 
+  expandTable();
+
   // Go through all callsign elements and apply flag and strike through zero
-  if (cset.flag == null || cset.flag == true) {
+  if (cset.flag == null || cset.flag == true || cset.zero == null || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
       if (csettings.debug)
@@ -137,7 +141,8 @@ function callsign() {
           callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
         }
       }
-      if (csettings.zero) {
+
+      if (cset.zero == null || cset.zero) {
         callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
       }
     }
@@ -145,9 +150,9 @@ function callsign() {
 
   if (cset.debug) {
     if (window.performance != null) {
-      performance.mark("cs-done");
-      performance.measure("callsign", "cs-start", "cs-done");
-      let measures = performance.getEntriesByName("callsign");
+      performance.mark('cs-done');
+      performance.measure('callsign', 'cs-start', 'cs-done');
+      let measures = performance.getEntriesByName('callsign');
       let measure = measures[0];
       console.log('callsign.js exec took', measure.duration);
       performance.clearMarks();

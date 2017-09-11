@@ -8,7 +8,7 @@ script:
   - csslint src/*.css
 
 after_script:
-  - uglifyjs --src/callsign.js --compress --mangle
+  - uglifyjs src/callsign.js --compress --mangle
   - zip callsign.zip src/*
 
 deploy:

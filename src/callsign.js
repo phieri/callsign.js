@@ -68,41 +68,32 @@ function flag(code) {
 }
 
 /**
- * Checks if a character combination is inside a specified range.
- * @param {!string} value
- * @param {!string} range
- * @returns {boolean}
- */
-function inRange(value, range) {
-  'use strict';
-  let split = range.split('-');
-
-  if (split.length == 1 && split[0] == value)
-    return true;
-
-  if (value.length < split[0].length)
-    return false;
-
-  if (split[0] == split[1])
-    return false;
-
-  let newRange = split[0];
-  let character = newRange.charCodeAt(0);
-  switch (character) {
-    case 90:
-      newRange = 'A';
-    default:
-      newRange = String.fromCharCode(++c);
-  }
-  return inRange(value, newRange);
-}
-
-/**
  * Expand the letter intervals.
  */
 function expandTable() {
   'use strict';
-  //console.log(text);
+  let len = Object.keys(ITU_PREFIX_TABLE).length;
+  console.log('sdfjnsldfnksldn',len);
+  for (let i = 0; i < len; ++i) {
+    console.log('xxxxxx', ITU_PREFIX_TABLE[i]);
+    let newRow = [];
+    let commaSplit = ITU_PREFIX_TABLE[i].split(',');
+
+    for (let commaValue of commaSplit) {
+      let dashSplit = commaValue.split('-');
+      if (dashSplit.length == 1) {
+        newRow.push(dashSplit[0]);
+      } else {
+        switch (character) {
+          case 90:
+            newRange = 'A';
+          default:
+            newRange = String.fromCharCode(++c);
+        }
+      }
+    }
+    console.log(ITU_PREFIX_TABLE[i]);
+  }
 }
 
 function callsign() {
@@ -129,16 +120,20 @@ function callsign() {
   if (cset.flag == null || cset.flag == true || cset.zero == null || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
-      if (csettings.debug)
-        console.log("Found callsign:", callsignElements[i].innerHTML);
-      for (let row in ITU_PREFIX_TABLE) {
+      if (cset.flag == null || cset.flag == true) {
         let prefix = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
-        if (inRange(prefix[1], ITU_PREFIX_TABLE[row])) {
-          let flagElement = document.createElement('span');
-          flagElement.setAttribute('class', 'callsign-flag');
-          flagElement.setAttribute('title', row);
-          flagElement.innerHTML = flag(row);
-          callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
+        if (cset.debug)
+          console.log('Found callsign:', callsignElements[i].innerHTML);
+        for (let row in ITU_PREFIX_TABLE) {
+          console.log('sdfsdfs', row);
+          if (row.includes(prefix)) {
+            let flagElement = document.createElement('span');
+            flagElement.setAttribute('class', 'callsign-flag');
+            flagElement.setAttribute('title', row);
+            flagElement.innerHTML = flag(row);
+            callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
+            break;
+          }
         }
       }
 

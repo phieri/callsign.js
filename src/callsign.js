@@ -72,8 +72,6 @@ function inRange(value, range) {
 
   if (split.length == 1 && split[0] == value)
     return true;
-  else
-    return false;
 
   if (value.length < split[0].length)
     return false;
@@ -81,31 +79,23 @@ function inRange(value, range) {
   if (split[0] == split[1])
     return false;
 
-  let newRange = split[1];
-  return inRange(value, 'SA');
+  let newRange = split[0];
+  let c = newRange.charCodeAt(0);
+  switch (c) {
+    case 90:
+      newRange = 'A';
+    default:
+      newRange = String.fromCharCode(++c);
+  }
+  return inRange(value, newRange);
 }
 
 /**
- * @param {string} text
+ * Expand the letter intervals.
  */
-function examine(text) {
+function expand() {
   'use strict';
   //console.log(text);
-}
-
-/**
- * Recursive method to traverse the DOM tree.
- * @param {!Element} element
- */
-function traverse(element) {
-  'use strict';
-  if (element.children.length == 0) {
-    examine(element.textContent);
-  } else if (element.children.length >= 1) {
-    for (let i = 0; i < element.children.length; i++) {
-      traverse(element.children[i]);
-    }
-  }
 }
 
 function callsign() {
@@ -126,11 +116,6 @@ function callsign() {
     } else {
       alert('Performance API not available');
     }
-  }
-
-  // Traverse the DOM tree and add callsign tag to matching strings
-  if (csettings.search == null || csettings.search == true) {
-    traverse(document.body);
   }
 
   // Go through all callsign elements and apply flag and strike through zero

@@ -10,13 +10,7 @@ Add callsign.js and callsign.css to the HTML document's `head` section.
 <script src="callsign.js" defer></script>
 ```
 
-It will then parse the document, looking for common callsign patterns.
-```html
-<p>I heard SM8AYA in contact with SA8YAY on shortwave.</p>
-```
-Here `SM8AYA` and `SA8YAY` will be identified.
-
-You can turn off the pattern search and rely on markup through the HTML tag `<callsign>`.
+Tag the call signs with the HTML tag `<callsign>`.
 ```html
 <p>I heard <callsign>SM8AYA</callsign> and <callsign>SA8YAY</callsign> on shortwave.</p>
 ```
@@ -27,7 +21,6 @@ Options can be set in the variable `csettings`. Make sure it's defined before ca
 var csettings = {
   debug: false,
   flag: true,
-  search: true,
   zero: true
 };
 ```
@@ -36,7 +29,6 @@ var csettings = {
 | --- | --- |
 | debug | Write various information to the browser console. |
 | flag | Show country flag before the call sign. |
-| search | Parse the entire document for text patterns.<br>⚠️ Potentially CPU intense. Turn off if not needed. |
 | zero | Replace 0 with 0&#x0338; in call signs. |
 
 # References

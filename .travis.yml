@@ -16,7 +16,7 @@ deploy:
   provider: releases
   api_key:
     secure: lkjnsdflnsdlkklsndflnsdflknsfdlkn
-  file: "callsign.min.zip"
+  file: "callsign.zip"
   skip_cleanup: true
   on:
     tags: true

@@ -1,19 +1,19 @@
 callsign,
 .callsign-flag {
-  display: inline;
   border: 1px solid #ddd;
+  display: inline;
   font-family: monospace;
 }
 
 callsign {
+  background-color: #eee;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #222;
-  background-color: #eee;
 }
 
 .callsign-flag {
+  border-bottom-left-radius: 2px;
   border-right: none;
   border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
 }

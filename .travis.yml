@@ -1,7 +1,7 @@
 language: javascript
 
 install:
-  - npm install -g eslint csslint uglify-es csso
+  - npm install -g eslint csslint uglify-es csso-cli
 
 script:
   - eslint src/*.js

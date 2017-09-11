@@ -16,9 +16,9 @@ Tag the call signs with the HTML tag `<callsign>`.
 ```
 
 # Options
-Options can be set in the variable `csettings`. Make sure it's defined before callsign.js executes. The defaults are like this:
+Options can be set in the variable `cset`. Make sure it's defined before callsign.js executes. The defaults are like this:
 ```javascript
-var csettings = {
+var cset = {
   debug: false,
   flag: true,
   zero: true

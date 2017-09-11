@@ -100,17 +100,15 @@ function expand() {
 
 function callsign() {
   'use strict';
-  if (csettings == null)
-    var csettings = {};
-  if (csettings.debug == null)
-    csettings.debug = true;
-  if (csettings.zero == null)
-    csettings.zero = true;
+  if (cset == null)
+    var cset = {};
+  if (cset.debug == null)
+    cset.debug = true;
 
   if (window.console == null)
-    csettings.debug = false;
+    cset.debug = false;
 
-  if (csettings.debug) {
+  if (cset.debug) {
     if (window.performance !== null) {
       performance.mark("cs-start");
     } else {
@@ -119,7 +117,7 @@ function callsign() {
   }
 
   // Go through all callsign elements and apply flag and strike through zero
-  if (csettings.flag == null || csettings.flag == true) {
+  if (cset.flag == null || cset.flag == true) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
       if (csettings.debug)
@@ -140,7 +138,7 @@ function callsign() {
     }
   }
 
-  if (csettings.debug) {
+  if (cset.debug) {
     if (window.performance != null) {
       performance.mark("cs-done");
       performance.measure("callsign", "cs-start", "cs-done");

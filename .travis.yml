@@ -11,13 +11,12 @@ after_script:
   - uglifyjs src/callsign.js --compress --mangle --output callsign.min.js
   - csso src/callsign.css --output callsign.min.css
   - zip callsign.zip callsign.min.* src/*
-  - cat callsign.zip | base64
 
 deploy:
   provider: releases
   api_key:
     secure: lkjnsdflnsdlkklsndflnsdflknsfdlkn
-  file: "callsign.zip"
+  file: "callsign.min.zip"
   skip_cleanup: true
   on:
     tags: true

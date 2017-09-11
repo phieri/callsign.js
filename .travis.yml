@@ -1,15 +1,16 @@
 language: javascript
 
 install:
-  - npm install -g eslint csslint uglify-es
+  - npm install -g eslint csslint uglify-es csso
 
 script:
   - eslint src/*.js
   - csslint src/*.css
 
 after_script:
-  - uglifyjs src/callsign.js --compress --mangle
-  - zip callsign.zip src/*
+  - uglifyjs src/callsign.js --compress --mangle --output callsign.min.js
+  - csso src/callsign.css --output callsign.min.css
+  - zip callsign.zip callsign.min.* src/*
 
 deploy:
   provider: releases

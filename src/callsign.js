@@ -73,9 +73,7 @@ function flag(code) {
 function expandTable() {
   'use strict';
   let len = Object.keys(ITU_PREFIX_TABLE).length;
-  console.log('sdfjnsldfnksldn',len);
   for (let i = 0; i < len; ++i) {
-    console.log('xxxxxx', ITU_PREFIX_TABLE[i]);
     let newRow = [];
     let commaSplit = ITU_PREFIX_TABLE[i].split(',');
 
@@ -92,7 +90,6 @@ function expandTable() {
         }
       }
     }
-    console.log(ITU_PREFIX_TABLE[i]);
   }
 }
 
@@ -125,7 +122,6 @@ function callsign() {
         if (cset.debug)
           console.log('Found callsign:', callsignElements[i].innerHTML);
         for (let row in ITU_PREFIX_TABLE) {
-          console.log('sdfsdfs', row);
           if (row.includes(prefix)) {
             let flagElement = document.createElement('span');
             flagElement.setAttribute('class', 'callsign-flag');

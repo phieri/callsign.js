@@ -7,7 +7,7 @@ script:
   - eslint src/*.js
   - csslint src/*.css
 
-after_script:
+before_deploy:
   - uglifyjs src/callsign.js --compress --mangle --reserved 'cset' --output callsign.min.js
   - csso src/callsign.css --output callsign.min.css
   - zip callsign.zip callsign.min.* src/*

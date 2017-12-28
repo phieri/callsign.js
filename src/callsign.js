@@ -103,6 +103,11 @@ function callsign() {
   if (window.console == null)
     cset.debug = false;
 
+  // Stop the script if there are no callsign tags in the document.
+  if (document.getElementsByTagName('callsign').length == 0) {
+    return;
+  }
+
   if (cset.debug) {
     if (window.performance !== null) {
       performance.mark('cs-start');

@@ -1,5 +1,5 @@
 /**
- * @file Highlight amateur radio call signs in web pages with this JavaScript library
+ * @file Highlight amateur radio call signs in web pages with this JavaScript library.
  * @version 0.1.0
  * @author Philip Eriksson <www.philiperiksson.se>
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
@@ -113,7 +113,7 @@ function callsign() {
 
   expandTable();
 
-  // Go through all callsign elements and apply flag and strike through zero
+  // Go through all callsign elements and apply flag and strike through zero.
   if (cset.flag == null || cset.flag == true || cset.zero == null || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {

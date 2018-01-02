@@ -62,7 +62,7 @@ const CALLSIGN_REGEX = /(\d?\D{1,3})\d\D{1,3}(\/\D{1,3})?/;
  * @param {!string} code The ISO 3166-1 alpha-2 code
  * @returns {string}
  */
-function flag(code) {
+function getFlag(code) {
   'use strict';
   return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
 }
@@ -131,7 +131,7 @@ function callsign() {
             let flagElement = document.createElement('span');
             flagElement.setAttribute('class', 'callsign-flag');
             flagElement.setAttribute('title', row);
-            flagElement.innerHTML = flag(row);
+            flagElement.innerHTML = getFlag(row);
             callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
             break;
           }

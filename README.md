@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/Lominean/callsign.js.svg?branch=master)](https://travis-ci.org/Lominean/callsign.js)
 
 # callsign.js
-This JavaScript library gives website users more ways to interract with written amateur radio callsigns.
+This JavaScript library gives website users more ways to interract with written ITU call signs, including amateur radio.
 
 # Usage
 Add callsign.js and callsign.css to the HTML document's `head` section.

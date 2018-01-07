@@ -128,10 +128,10 @@ function callsign() {
   expandTable();
 
   // Go through all callsign elements and apply flag and strike through zero.
-  if (cset.flag == null || cset.flag == true || cset.zero == null || cset.zero) {
+  if (cset.flag == null || cset.flag || cset.zero == null || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
-      if (cset.flag == null || cset.flag == true) {
+      if (cset.flag == null || cset.flag) {
         let prefix = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
         if (cset.debug)
           console.log('Found callsign:', callsignElements[i].innerHTML);

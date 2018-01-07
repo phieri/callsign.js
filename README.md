@@ -20,7 +20,6 @@ Tag the call signs with the HTML tag `<callsign>`.
 Options can be set in the variable `cset`. Make sure it's defined before callsign.js executes. The defaults are like this:
 ```javascript
 var cset = {
-  debug: false,
   flag: true,
   zero: true
 };
@@ -28,7 +27,6 @@ var cset = {
 
 | Name | Description |
 | --- | --- |
-| debug | Write various information to the browser console. |
 | flag | Show country flag before the call sign. |
 | zero | Replace 0 with 0&#x0338; in call signs. |
 

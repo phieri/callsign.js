@@ -97,8 +97,6 @@ function callsign() {
   'use strict';
   if (cset == null)
     var cset = {};
-  if (cset.debug == null)
-    cset.debug = true;
 
   if (window.console == null)
     cset.debug = false;
@@ -106,14 +104,6 @@ function callsign() {
   // Stop the script if there are no callsign tags in the document.
   if (document.getElementsByTagName('callsign').length == 0) {
     return;
-  }
-
-  if (cset.debug) {
-    if (window.performance !== null) {
-      performance.mark('cs-start');
-    } else {
-      console.error('Performance API n/a');
-    }
   }
 
   expandTable();
@@ -141,18 +131,6 @@ function callsign() {
       if (cset.zero == null || cset.zero) {
         callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
       }
-    }
-  }
-
-  if (cset.debug) {
-    if (window.performance != null) {
-      performance.mark('cs-done');
-      performance.measure('callsign', 'cs-start', 'cs-done');
-      let measures = performance.getEntriesByName('callsign');
-      let measure = measures[0];
-      console.log('callsign.js exec took', measure.duration);
-      performance.clearMarks();
-      performance.clearMeasures();
     }
   }
 }

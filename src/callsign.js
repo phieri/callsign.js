@@ -68,6 +68,25 @@ function getFlag(code) {
 }
 
 /**
+ * Recursive method to expand a letter range.
+ * @param {!string} start The first word of the range
+ * @param {!string} end The last word of the range
+ * @returns {Array}
+ */
+function expandRange(start, end) {
+  'use strict';
+  let range = {};
+  if (start == end) {
+    return end;
+  } else {
+    let newStart;
+    newStart = String.fromCharCode(start.charCodeAt(start.length-1)+1);
+    range.push(expandRange(newStart, end));
+  }
+  return range;
+}
+
+/**
  * Expand the letter intervals.
  */
 function expandTable() {

@@ -6,7 +6,7 @@
  */
 
 /** @constant */
-const ITU_PREFIX_TABLE = {
+const PREFIX_TABLE = {
   AL: 'ZA',
   AR: 'AY-AZ,LO-LW',
   AT: 'OE',
@@ -75,12 +75,19 @@ function getFlag(code) {
  */
 function expandRange(start, end) {
   'use strict';
-  let range = {};
+  let range = [];
   if (start == end) {
     return end;
   } else {
     let newStart;
-    newStart = String.fromCharCode(start.charCodeAt(start.length-1)+1);
+    newStart = String.fromCharCode(start.charCodeAt(start.length - 1) + 1);
+    let character = start.charCodeAt(start.length - 1);
+    switch (character) {
+      case 90:
+        newStart = 'A';
+      default:
+        newStart = String.fromCharCode(++character);
+    }
     range.push(expandRange(newStart, end));
   }
   return range;
@@ -91,55 +98,53 @@ function expandRange(start, end) {
  */
 function expandTable() {
   'use strict';
-  let len = Object.keys(ITU_PREFIX_TABLE).length;
-  for (let i = 0; i < len; ++i) {
-    let newRow = [];
-    let commaSplit = ITU_PREFIX_TABLE[i].split(',');
+  console.log(PREFIX_TABLE);
+  for (let [territory, data] of Object.entries(PREFIX_TABLE)) {
+    let newData = [];
+    let commaSplit = data.split(',');
 
-    for (let commaValue of commaSplit) {
-      let dashSplit = commaValue.split('-');
-      if (dashSplit.length == 1) {
-        newRow.push(dashSplit[0]);
-      } else {
-        switch (character) {
-          case 90:
-            newRange = 'A';
-          default:
-            newRange = String.fromCharCode(++c);
+    if (commaSplit.length == 1) {
+      newData.push(commaSplit[0]);
+    } else {
+      for (let commaValue of commaSplit) {
+        let dashSplit = commaValue.split('-');
+
+        if (dashSplit.length == 1) {
+          newData.push(dashSplit[0]);
+        } else {
+          newData.push(expandRange(dashSplit[0], dashSplit[1]));
         }
+        data = newData;
       }
     }
+
   }
+  console.log(PREFIX_TABLE);
 }
 
 function callsign() {
   'use strict';
-  if (cset == null)
+  if (cset === null)
     var cset = {};
 
-  if (window.console == null)
-    cset.debug = false;
-
-  // Stop the script if there are no callsign tags in the document.
-  if (document.getElementsByTagName('callsign').length == 0) {
+  // Stop the script if there are no callsign elements in the document.
+  if (document.getElementsByTagName('callsign').length === 0) {
     return;
   }
 
   expandTable();
 
   // Go through all callsign elements and apply flag and strike through zero.
-  if (cset.flag == null || cset.flag || cset.zero == null || cset.zero) {
+  if (cset.flag === null || cset.flag || cset.zero === null || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
-      if (cset.flag == null || cset.flag) {
+      if (cset.flag === null || cset.flag) {
         let prefix = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
-        if (cset.debug)
-          console.log('Found callsign:', callsignElements[i].innerHTML);
-        for (let row in ITU_PREFIX_TABLE) {
+        for (let row in PREFIX_TABLE) {
           if (row.includes(prefix)) {
             let flagElement = document.createElement('span');
-            flagElement.setAttribute('class', 'callsign-flag');
-            flagElement.setAttribute('title', row);
+            flagElement.class = 'callsign-flag';
+            flagElement.title = row;
             flagElement.innerHTML = getFlag(row);
             callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
             break;
@@ -147,7 +152,7 @@ function callsign() {
         }
       }
 
-      if (cset.zero == null || cset.zero) {
+      if (cset.zero === null || cset.zero) {
         callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
       }
     }

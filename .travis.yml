@@ -9,7 +9,7 @@ script:
   - csslint src/*.css
 
 before_deploy:
-  - uglifyjs src/callsign.js --compress --mangle --reserved 'cset' --output callsign.min.js
+  - uglifyjs src/callsign.js --compress --mangle reserved=['cset'] --output callsign.min.js
   - csso src/callsign.css --output callsign.min.css
   - zip callsign.zip callsign.min.* src/*
 

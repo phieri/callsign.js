@@ -124,8 +124,12 @@ function expandTable() {
 
 function callsign() {
   'use strict';
-  if (cset === null)
-    var cset = {};
+  if (cset === null) {
+    cset = {
+      flag: true,
+      zero: true
+    };
+  }
 
   // Stop the script if there are no callsign elements in the document.
   if (document.getElementsByTagName('callsign').length === 0) {
@@ -135,10 +139,10 @@ function callsign() {
   expandTable();
 
   // Go through all callsign elements and apply flag and strike through zero.
-  if (cset.flag === null || cset.flag || cset.zero === null || cset.zero) {
+  if (cset.flag || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
     for (let i = 0; i < callsignElements.length; i++) {
-      if (cset.flag === null || cset.flag) {
+      if (cset.flag) {
         let prefix = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
         for (let row in PREFIX_TABLE) {
           if (row.includes(prefix)) {
@@ -152,7 +156,7 @@ function callsign() {
         }
       }
 
-      if (cset.zero === null || cset.zero) {
+      if (cset.zero) {
         callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
       }
     }

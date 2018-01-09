@@ -1,5 +1,5 @@
 /**
- * @file Highlight amateur radio call signs in web pages with this JavaScript library.
+ * @file Highlight radio call signs (including amateur) in web pages with this JavaScript library.
  * @version 1.0.0-alpha
  * @author Philip Eriksson <http://www.philiperiksson.se>
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
@@ -87,7 +87,7 @@ function expandRange(start, end) {
 }
 
 /**
- * Expand the letter intervals.
+ * Expand the prefix table.
  */
 function expandTable() {
   'use strict';

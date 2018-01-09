@@ -58,7 +58,7 @@ const PREFIX_TABLE = {
 const CALLSIGN_REGEX = /(\d?\D{1,3})\d\D{1,3}(\/\D{1,3})?/;
 
 /**
- * Converts an ISO 3166-1 alpha-2 code to a flag emoji.
+ * Converts an ISO 3166-1 alpha-2 code to a Unicode Regional Indicator Symbol (emoji flag).
  * @param {!string} code The ISO 3166-1 alpha-2 code
  * @returns {string}
  */

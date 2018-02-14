@@ -123,13 +123,13 @@ function expandTable() {
     let newData = [];
     let commaSplit = data.split(',');
 
-    if (commaSplit.length == 1) {
+    if (commaSplit.length === 1) {
       newData.push(commaSplit[0]);
     } else {
       for (let commaValue of commaSplit) {
         let dashSplit = commaValue.split('-');
 
-        if (dashSplit.length == 1) {
+        if (dashSplit.length === 1) {
           newData.push(dashSplit[0]);
         } else {
           newData.push(expandRange(dashSplit[0], dashSplit[1]));
@@ -137,7 +137,6 @@ function expandTable() {
         data = newData;
       }
     }
-
   }
   console.log(PREFIX_TABLE);
 }
@@ -151,21 +150,16 @@ function callsign() {
     };
   }
 
-  // Stop the script if there are no callsign elements in the document.
-  if (document.getElementsByTagName('callsign').length === 0) {
-    return;
-  }
-
-  expandTable();
-
   // Go through all callsign elements and apply flag and strike through zero.
   if (cset.flag || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
+    if (callsignElements.length === 0) return;
+    if (cset.flag) expandTable();
     for (let i = 0; i < callsignElements.length; i++) {
       if (cset.flag) {
-        let prefix = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
+        let prefixFromElement = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
         for (let row in PREFIX_TABLE) {
-          if (row.includes(prefix)) {
+          if (row.includes(prefixFromElement)) {
             let flagElement = document.createElement('span');
             flagElement.class = 'callsign-flag';
             flagElement.title = row;

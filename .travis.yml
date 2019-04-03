@@ -1,5 +1,6 @@
-language: javascript
+language: node_js
 group: travis_latest
+cache: npm
 
 install:
   - npm install -g eslint csslint uglify-es csso-cli

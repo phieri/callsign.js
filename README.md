@@ -27,8 +27,8 @@ var cset = {
 
 | Name | Description |
 | --- | --- |
-| flag | Show country flag before the call sign. |
-| zero | Replace 0 with 0&#x0338; in call signs. |
+| flag | Set true to show country flag before the call signs. |
+| zero | Set true to replace 0 with 0&#x0338; in call signs. |
 
 # References
 * [ARTICLE 19 – Identification of stations](http://life.itu.int/radioclub/rr/art19.pdf)

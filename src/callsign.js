@@ -111,6 +111,7 @@ function expandRange(start, end) {
 
 /**
  * Expand the prefix table.
+ * @returns {string[]}
  */
 function getPrefixTable() {
   'use strict';

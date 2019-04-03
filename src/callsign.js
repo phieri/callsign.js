@@ -75,7 +75,7 @@ const PREFIX_TABLE = {
 };
 
 /** @constant */
-const CALLSIGN_REGEX = /(\d?\D{1,3})\d\D{1,3}(\/\D{1,3})?/;
+const CALLSIGN_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?/;
 
 /**
  * Converts an ISO 3166-1 alpha-2 code to a Unicode Regional Indicator Symbol (emoji flag).

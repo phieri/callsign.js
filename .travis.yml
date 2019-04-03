@@ -1,5 +1,6 @@
 language: node_js
-group: travis_latest
+node_js:
+  - "node"
 cache: npm
 
 install:

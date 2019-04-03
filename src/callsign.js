@@ -88,63 +88,60 @@ function getFlag(code) {
 }
 
 /**
- * Recursive method to expand a letter range.
+ * Function for expanding a letter range.
  * @param {!string} start The first word of the range
  * @param {!string} end The last word of the range
- * @returns {Array}
+ * @returns {string[]}
+ * @see https://stackoverflow.com/questions/30685916/increment-a-string-with-letters
  */
 function expandRange(start, end) {
   'use strict';
   let range = [];
-  if (start == end) {
-    return end;
-  } else {
-    let newStart;
-    newStart = String.fromCharCode(start.charCodeAt(start.length - 1) + 1);
-    let character = start.charCodeAt(start.length - 1);
-    switch (character) {
-      case 90:
-        newStart = 'A';
-      default:
-        newStart = String.fromCharCode(++character);
-    }
-    range.push(expandRange(newStart, end));
+  let secondEndLetter = end.charAt(1);
+  let current = start.charAt(1);
+
+  while (current != secondEndLetter) {
+    range.push(start.charAt(0) + current);
+    current = String.fromCharCode(current.charCodeAt(0) + 1);
   }
+
+  range.push(end);
   return range;
 }
 
 /**
  * Expand the prefix table.
  */
-function expandTable() {
+function getPrefixTable() {
   'use strict';
-  console.log(PREFIX_TABLE);
+  let newTable = {};
+
   for (let [territory, data] of Object.entries(PREFIX_TABLE)) {
-    let newData = [];
+    let newRow = [];
     let commaSplit = data.split(',');
 
     if (commaSplit.length === 1) {
-      newData.push(commaSplit[0]);
+      newRow.push(commaSplit[0]);
     } else {
       for (let commaValue of commaSplit) {
         let dashSplit = commaValue.split('-');
 
         if (dashSplit.length === 1) {
-          newData.push(dashSplit[0]);
+          newRow.push(dashSplit[0]);
         } else {
-          newData.push(expandRange(dashSplit[0], dashSplit[1]));
+          newRow = newRow.concat(expandRange(dashSplit[0], dashSplit[1]));
         }
-        data = newData;
       }
     }
+    newTable[territory] = newRow;
   }
-  console.log(PREFIX_TABLE);
+  return newTable;
 }
 
 function callsign() {
   'use strict';
-  if (cset === null) {
-    cset = {
+  if (cset == null) {
+    var cset = {
       flag: true,
       zero: true
     };
@@ -153,17 +150,21 @@ function callsign() {
   // Go through all callsign elements and apply flag and strike through zero.
   if (cset.flag || cset.zero) {
     let callsignElements = document.getElementsByTagName('callsign');
-    if (callsignElements.length === 0) return;
-    if (cset.flag) expandTable();
-    for (let i = 0; i < callsignElements.length; i++) {
+    let callsignElementsLength = callsignElements.length;
+    if (callsignElementsLength === 0) return;
+
+    let prefixTable;
+    if (cset.flag) prefixTable = getPrefixTable();
+
+    for (let i = 0; i < callsignElementsLength; i++) {
       if (cset.flag) {
-        let prefixFromElement = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML);
-        for (let row in PREFIX_TABLE) {
-          if (row.includes(prefixFromElement)) {
+        let prefixFromElement = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML)[1];
+        for (let [iso, prefix] of Object.entries(prefixTable)) {
+          if (prefix.includes(prefixFromElement)) {
             let flagElement = document.createElement('span');
-            flagElement.class = 'callsign-flag';
-            flagElement.title = row;
-            flagElement.innerHTML = getFlag(row);
+            flagElement.className = 'callsign-flag';
+            flagElement.title = iso;
+            flagElement.innerHTML = getFlag(iso);
             callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
             break;
           }

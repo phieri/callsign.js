@@ -121,11 +121,15 @@ function getPrefixTable() {
     let commaSplit = data.split(',');
 
     if (commaSplit.length === 1) {
-      newRow.push(commaSplit[0]);
+      let dashSplit = commaSplit[0].split('-');
+      if (dashSplit.length === 1) {
+        newRow.push(dashSplit[0]);
+      } else {
+        newRow = newRow.concat(expandRange(dashSplit[0], dashSplit[1]));
+      }
     } else {
       for (let commaValue of commaSplit) {
         let dashSplit = commaValue.split('-');
-
         if (dashSplit.length === 1) {
           newRow.push(dashSplit[0]);
         } else {

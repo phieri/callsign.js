@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+  - "node"
+cache: npm
+
+install:
+  - npm install -g eslint csslint uglify-es csso-cli
+
+script:
+  - eslint src/*.js
+  - csslint src/*.css
+
+before_deploy:
+  - uglifyjs src/callsign.js --compress passes=3,ecma=8 --mangle reserved=['cset'] --output callsign.min.js
+  - csso src/callsign.css --output callsign.min.css
+  - zip callsign.zip callsign.min.* src/*
+
+deploy:
+  provider: releases
+  api_key:
+    secure: UhhIHfCCDuXWsTddd2c6NCxNQZ4phjkpxJ9EI3U/UzRTr1bn87nvHtbqVp3sdQH4ec+3O892wSV+/BKxsoN1MKJlonLYaom/SxWn659FhMXVchBF7vTqRtvYHbjm5OLOSv9/J5cd8B9e9sbHL6RuT8YeRTzbu5BPQXp2muzr1o20AcBPww5UuzZEJWDCB5H1AHd6ScsbXvkERVWYU3G/Ew20r4j3YGkF1WTNnRJKCBqU0sHh2qK3LKlR7g6o/mB4r2JIUgVd+vE5Rso0nU7GQKmsUzzmTJYHC8rStGwZwmcgab/McQdVikAaxfVB5tgEkG9gHYY/Y3uKp4uJHTQhhSl/CejauKeYZRFmsjnQ7ouZwzsZ7BV6gnA7T0VQUk+8RUJD1d+Q8M2QUdoNul6i94KZDECD0xRaK7+/AmBcnbMaNFHEmHCVbueYnrKaEPZug+sxTDAMkl6RrJMi5TTdZXiMbqulvtwNOsntYnZvHQNAft2o8f7+prIDjzPXEV+VHuZvu+ECFstDQKG4iEqHaKwuBdwG8JHB2BaNSWeQNO5KbyykmZWf/PS5m7JHY1hAK2MldK8zF5RL8YeHSUIuRv1/LQN6zd8mVQKooQ2GwEzvRvjvTxFRJLmhgAFJfjNOrmZAlklE5slYoVaDoCR2jTIVQStQWOnwtJHW4VNZ5GU=
+  file: callsign.zip
+  skip_cleanup: true
+  draft: true
+  on:
+    tags: true

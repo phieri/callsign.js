@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>callsign.js example page</title>
+  <link href="https://github.com/Lominean/callsign.js/blob/develop/src/callsign.css" rel="stylesheet">
+
+  <script src="https://github.com/Lominean/callsign.js/blob/develop/src/callsign.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <h1>callsign.js example page</h1>
+  <pre style="display: inline-block; background-color: #ddd; padding: 10px;">
+var cset = {
+  flag: true,
+  zero: true
+};</pre>
+  <p>Here comes a call sign which is marked up: <call-sign>ZR9OOO</call-sign> adipiscing elit.</p>
+  <p>Here comes another call sign which is marked up: <call-sign>SL1ABC</call-sign> adipiscing.</p>
+  <p>Here comes a call sign which is not marked up: SA9BC lorem ipsum</p>
+  <p>Here comes a call sign which is not marked up but wrapped in another tag <b>SL9ZZZ</b> nec odio.</p>
+  <p>Here comes a call sign which is marked up and contains a zero:
+    <call-sign>OM0ZAS</call-sign>. Mauris massa. <b>Vestibulum</b> lacinia arcu eget nulla.</p>
+  <script type="application/javascript">
+    var cset = {
+      flag: true,
+      zero: true
+    };
+  </script>
+</body>
+
+</html>

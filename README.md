@@ -1,35 +1,36 @@
-# callsign.js
+[![Build Status](https://travis-ci.org/Lominean/callsign.js.svg?branch=master)](https://travis-ci.org/Lominean/callsign.js)
+[![Github All Releases](https://img.shields.io/github/downloads/Lominean/callsign.js/total.svg)]()
 
-Add callsign.js and callsign.css to the HTML document's `head` section.
+# callsign.js
+This JavaScript library gives website users more ways to interract with written ITU call signs, including amateur radio.
+
+# Usage
+Add callsign.js and callsign.css in the `<head>` section.
 ```html
 <link href="callsign.css" rel="stylesheet">
 <script src="callsign.js" defer></script>
 ```
 
-It will then parse the document, looking for common callsign patterns.
+Tag the call signs with the custom HTML tag `<call-sign>`.
 ```html
-<p>I heard SM8AYA in contact with SA8YAY on shortwave.</p>
-```
-Here `SM8AYA` and `SA8YAY` will be identified.
-
-You can turn off the pattern search and rely on markup.
-```html
-<p>I heard <span class="callsign">SM8AYA</span> and <span class="callsign">SA8YAY</span> on shortwave.</p>
+<p>I heard <call-sign>SM8AYA</call-sign> and <call-sign>SA8YAY</call-sign> on shortwave.</p>
 ```
 
 # Options
-Options can be set in the variable `callsign`. Make sure it is defined before callsign.js executes. The defaults are like this:
+Options can be set in the variable `cset`. Make sure it's defined before callsign.js executes. The defaults are:
 ```javascript
-var callsign = {
-  search: true,
+var cset = {
+  flag: true,
   zero: true
 };
 ```
 
 | Name | Description |
 | --- | --- |
-| search | Parsing the entire document can take alot of computational cycles. Turn it off if you don't need it. |
-| zero | Enable the replacement of 0 with 0&#x0338; in callsigns. |
+| flag | Set true to show country flag before the call signs. |
+| zero | Set true to replace 0 with 0&#x0338; in call signs. |
 
 # References
-[ITU Table of Allocation of International Call Sign Series](https://www.arrl.org/international-call-sign-series)
+* [ARTICLE 19 – Identification of stations](http://life.itu.int/radioclub/rr/art19.pdf)
+* [ITU prefix – Wikipedia](https://en.wikipedia.org/wiki/ITU_prefix)
+* [ITU Table of Allocation of International Call Sign Series](https://www.arrl.org/international-call-sign-series)

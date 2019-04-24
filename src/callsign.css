@@ -1,18 +1,18 @@
-callsign,
-.callsign-flag {
+call-sign,
+.call-sign-flag {
   display: inline;
   padding: 2px;
   border: 1px solid #ddd;
   font-family: monospace;
 }
 
-callsign {
+call-sign {
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   color: #333;
 }
 
-.callsign-flag {
+.call-sign-flag {
   border-bottom-left-radius: 3px;
   border-right: none;
   border-top-left-radius: 3px;

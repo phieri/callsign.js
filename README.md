@@ -11,9 +11,9 @@ Add callsign.js and callsign.css in the `<head>` section.
 <script src="callsign.js" defer></script>
 ```
 
-Tag the call signs with the HTML tag `<callsign>`.
+Tag the call signs with the custom HTML tag `<call-sign>`.
 ```html
-<p>I heard <callsign>SM8AYA</callsign> and <callsign>SA8YAY</callsign> on shortwave.</p>
+<p>I heard <call-sign>SM8AYA</call-sign> and <call-sign>SA8YAY</call-sign> on shortwave.</p>
 ```
 
 # Options

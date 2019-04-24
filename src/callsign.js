@@ -77,110 +77,119 @@ const PREFIX_TABLE = {
 /** @constant */
 const CALLSIGN_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?/;
 
-/**
- * Converts an ISO 3166-1 alpha-2 code to a Unicode Regional Indicator Symbol (emoji flag).
- * @param {!string} code The ISO 3166-1 alpha-2 code
- * @returns {string}
- */
-function getFlag(code) {
-  'use strict';
-  return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
-}
+class Callsign {
 
-/**
- * Function for expanding a letter range.
- * @param {!string} start The first word of the range
- * @param {!string} end The last word of the range
- * @returns {string[]}
- * @see https://stackoverflow.com/questions/30685916/increment-a-string-with-letters
- */
-function expandRange(start, end) {
-  'use strict';
-  let range = [];
-  let secondEndLetter = end.charAt(1);
-  let current = start.charAt(1);
-
-  while (current != secondEndLetter) {
-    range.push(start.charAt(0) + current);
-    current = String.fromCharCode(current.charCodeAt(0) + 1);
+  constructor() {
+    Callsign.callsign();
   }
 
-  range.push(end);
-  return range;
-}
+  /**
+   * Converts an ISO 3166-1 alpha-2 code to a Unicode Regional Indicator Symbol (emoji flag).
+   * @param {!string} code The ISO 3166-1 alpha-2 code
+   * @returns {string}
+   */
+  static getFlag(code) {
+    'use strict';
+    return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
+  }
 
-/**
- * Expand the prefix table.
- * @returns {string[]}
- */
-function getPrefixTable() {
-  'use strict';
-  let newTable = {};
+  /**
+   * Method for expanding a letter range.
+   * @param {!string} start The first word of the range
+   * @param {!string} end The last word of the range
+   * @returns {string[]}
+   * @see https://stackoverflow.com/questions/30685916/increment-a-string-with-letters
+   */
+  static expandRange(start, end) {
+    'use strict';
+    let range = [];
+    let secondEndLetter = end.charAt(1);
+    let current = start.charAt(1);
 
-  for (let [territory, data] of Object.entries(PREFIX_TABLE)) {
-    let newRow = [];
-    let commaSplit = data.split(',');
+    while (current != secondEndLetter) {
+      range.push(start.charAt(0) + current);
+      current = String.fromCharCode(current.charCodeAt(0) + 1);
+    }
 
-    if (commaSplit.length === 1) {
-      let dashSplit = commaSplit[0].split('-');
-      if (dashSplit.length === 1) {
-        newRow.push(dashSplit[0]);
-      } else {
-        newRow = newRow.concat(expandRange(dashSplit[0], dashSplit[1]));
-      }
-    } else {
-      for (let commaValue of commaSplit) {
-        let dashSplit = commaValue.split('-');
+    range.push(end);
+    return range;
+  }
+
+  /**
+   * Expand the prefix table.
+   * @returns {string[]}
+   */
+  static getPrefixTable() {
+    'use strict';
+    let newTable = {};
+
+    for (let [territory, data] of Object.entries(PREFIX_TABLE)) {
+      let newRow = [];
+      let commaSplit = data.split(',');
+
+      if (commaSplit.length === 1) {
+        let dashSplit = commaSplit[0].split('-');
         if (dashSplit.length === 1) {
           newRow.push(dashSplit[0]);
         } else {
-          newRow = newRow.concat(expandRange(dashSplit[0], dashSplit[1]));
+          newRow = newRow.concat(Callsign.expandRange(dashSplit[0], dashSplit[1]));
         }
-      }
-    }
-    newTable[territory] = newRow;
-  }
-  return newTable;
-}
-
-function callsign() {
-  'use strict';
-  if (cset == null) {
-    var cset = {
-      flag: true,
-      zero: true
-    };
-  }
-
-  // Go through all callsign elements and apply flag and strike through zero.
-  if (cset.flag || cset.zero) {
-    let callsignElements = document.getElementsByTagName('callsign');
-    let callsignElementsLength = callsignElements.length;
-    if (callsignElementsLength === 0) return;
-
-    let prefixTable;
-    if (cset.flag) prefixTable = getPrefixTable();
-
-    for (let i = 0; i < callsignElementsLength; i++) {
-      if (cset.flag) {
-        let prefixFromElement = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML)[1];
-        for (let [iso, prefix] of Object.entries(prefixTable)) {
-          if (prefix.includes(prefixFromElement)) {
-            let flagElement = document.createElement('span');
-            flagElement.className = 'callsign-flag';
-            flagElement.title = iso;
-            flagElement.innerHTML = getFlag(iso);
-            callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
-            break;
+      } else {
+        for (let commaValue of commaSplit) {
+          let dashSplit = commaValue.split('-');
+          if (dashSplit.length === 1) {
+            newRow.push(dashSplit[0]);
+          } else {
+            newRow = newRow.concat(Callsign.expandRange(dashSplit[0], dashSplit[1]));
           }
         }
       }
+      newTable[territory] = newRow;
+    }
+    return newTable;
+  }
 
-      if (cset.zero) {
-        callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
+  static callsign() {
+    'use strict';
+    if (cset == null) {
+      var cset = {
+        flag: true,
+        zero: true
+      };
+    }
+
+    // Go through all call-sign elements and apply flag and strike through zero.
+    if (cset.flag || cset.zero) {
+      //  customElements.define('call-sign', Callsign);
+      let callsignElements = document.getElementsByTagName('call-sign');
+      let callsignElementsLength = callsignElements.length;
+      if (callsignElementsLength === 0) return;
+
+      let prefixTable;
+      if (cset.flag) prefixTable = this.getPrefixTable();
+
+      for (let i = 0; i < callsignElementsLength; i++) {
+        if (cset.flag) {
+          let prefixFromElement = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML)[1];
+          for (let [iso, prefix] of Object.entries(prefixTable)) {
+            if (prefix.includes(prefixFromElement)) {
+              let flagElement = document.createElement('span');
+              flagElement.className = 'call-sign-flag';
+              flagElement.title = iso;
+              flagElement.innerHTML = Callsign.getFlag(iso);
+              callsignElements[i].parentNode.insertBefore(flagElement, callsignElements[i]);
+              break;
+            }
+          }
+        }
+
+        if (cset.zero) {
+          callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
+        }
       }
     }
   }
 }
 
-callsign();
+var callsign = new Callsign();
+callsign = null;

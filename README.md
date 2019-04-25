@@ -29,6 +29,10 @@ var cset = {
 | --- | --- |
 | flag | Set true to show country flag before the call signs. |
 | zero | Set true to replace 0 with 0&#x0338; in call signs. |
+# Minification
+This library is intentionally not provided with minified files.
+Amateur radio is about learning and experimenting.
+Minified files makes it drastically harder to understand how the code works.
 
 # References
 * [ARTICLE 19 – Identification of stations](http://life.itu.int/radioclub/rr/art19.pdf)

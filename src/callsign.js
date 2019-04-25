@@ -151,24 +151,29 @@ class Callsign {
 
   static callsign() {
     'use strict';
-    if (cset == null) {
-      var cset = {
-        flag: true,
-        zero: true
-      };
+    let el = document.head.querySelector("#callsign");
+
+    let flag = true;
+    if (el.dataset.flag == "false") {
+      flag = false;
+    }
+
+    let zero = true;
+    if (el.dataset.zero == "false") {
+      zero = false;
     }
 
     // Go through all call-sign elements and apply flag and strike through zero.
-    if (cset.flag || cset.zero) {
+    if (flag || zero) {
       let callsignElements = document.getElementsByTagName('call-sign');
       let callsignElementsLength = callsignElements.length;
       if (callsignElementsLength === 0) return;
 
       let prefixTable;
-      if (cset.flag) prefixTable = this.getPrefixTable();
+      if (flag) prefixTable = this.getPrefixTable();
 
       for (let i = 0; i < callsignElementsLength; i++) {
-        if (cset.flag) {
+        if (flag) {
           let prefixFromElement = CALLSIGN_REGEX.exec(callsignElements[i].innerHTML)[1];
           for (let [iso, prefix] of Object.entries(prefixTable)) {
             if (prefix.includes(prefixFromElement)) {
@@ -182,7 +187,7 @@ class Callsign {
           }
         }
 
-        if (cset.zero) {
+        if (zero) {
           callsignElements[i].innerHTML = callsignElements[i].innerHTML.replace(/0/, '0\u0338');
         }
       }

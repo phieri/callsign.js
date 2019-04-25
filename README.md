@@ -8,7 +8,7 @@ This JavaScript library gives website users more ways to interract with written 
 Add callsign.js and callsign.css in the `<head>` section.
 ```html
 <link href="callsign.css" rel="stylesheet">
-<script src="callsign.js" defer></script>
+<script id="callsign" src="callsign.js" defer></script>
 ```
 
 Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) `<call-sign>`.
@@ -17,18 +17,13 @@ Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-U
 ```
 
 # Options
-Options can be set in the variable `cset`. Make sure it's defined before callsign.js executes. The defaults are:
-```javascript
-var cset = {
-  flag: true,
-  zero: true
-};
-```
+Options can be set as attributes in the `<link>` tag. The defaults are:
 
-| Name | Description |
-| --- | --- |
-| flag | Set true to show country flag before the call signs. |
-| zero | Set true to replace 0 with 0&#x0338; in call signs. |
+| Name      | Default | Description |
+| --------- | ------- | ----------- |
+| data-flag | true    | Set true to show country flag before the call signs. |
+| data-zero | true    | Set true to replace 0 with 0&#x0338; in call signs. |
+
 # Minification
 This library is intentionally not provided with minified files.
 Amateur radio is about learning and experimenting.

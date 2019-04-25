@@ -160,7 +160,6 @@ class Callsign {
 
     // Go through all call-sign elements and apply flag and strike through zero.
     if (cset.flag || cset.zero) {
-      //  customElements.define('call-sign', Callsign);
       let callsignElements = document.getElementsByTagName('call-sign');
       let callsignElementsLength = callsignElements.length;
       if (callsignElementsLength === 0) return;

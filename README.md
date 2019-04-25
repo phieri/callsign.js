@@ -8,7 +8,7 @@ This JavaScript library gives website users more ways to interract with written 
 Add callsign.js and callsign.css in the `<head>` section.
 ```html
 <link href="callsign.css" rel="stylesheet">
-<script id="callsign" src="callsign.js" defer></script>
+<script id="callsign-js" src="callsign.js" defer></script>
 ```
 
 Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) `<call-sign>`.

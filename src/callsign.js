@@ -151,7 +151,7 @@ class Callsign {
 
   static callsign() {
     'use strict';
-    let el = document.head.querySelector("#callsign");
+    let el = document.head.querySelector("#callsign-js");
 
     let flag = true;
     if (el.dataset.flag == "false") {

@@ -23,7 +23,7 @@ Options can be set as attributes in the `<link>` tag. The defaults are:
 | ----------- | ------- | ----------- |
 | data-flag   | true    | Show country flag before the call signs. |
 | data-zero   | true    | Replace 0 with 0&#x0338; in call signs. |
-| data-search | true    | Search for untagged callsigns in the document. |
+| data-search | false   | Search for untagged callsigns in the document. |
 
 # Minification
 This library is intentionally not provided with minified files.

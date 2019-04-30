@@ -207,7 +207,7 @@ function search_callsigns() {
   document.body.innerHTML = html;
 }
 
-if (document.getElementById('callsign-js').dataset.search == 'true') {
+if (document.getElementById('callsign-js').dataset.search != 'false') {
   search_callsigns();
 }
 

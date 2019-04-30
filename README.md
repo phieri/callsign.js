@@ -19,10 +19,11 @@ Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-U
 # Options
 Options can be set as attributes in the `<link>` tag. The defaults are:
 
-| Name      | Default | Description |
-| --------- | ------- | ----------- |
-| data-flag | true    | Set true to show country flag before the call signs. |
-| data-zero | true    | Set true to replace 0 with 0&#x0338; in call signs. |
+| Name        | Default | Description |
+| ----------- | ------- | ----------- |
+| data-flag   | true    | Show country flag before the call signs. |
+| data-zero   | true    | Replace 0 with 0&#x0338; in call signs. |
+| data-search | true    | Search for untagged callsigns in the document. |
 
 # Minification
 This library is intentionally not provided with minified files.

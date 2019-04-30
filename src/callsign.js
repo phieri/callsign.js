@@ -75,7 +75,7 @@ const PREFIX_TABLE = {
 };
 
 /** @constant */
-const CALLSIGN_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?/;
+const CALLSIGN_REGEX = /(([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?)\s/;
 
 class Callsign {
 
@@ -193,6 +193,22 @@ class Callsign {
       }
     }
   }
+
+
+function search_callsigns() {
+  'use strict';
+  var html = document.body.innerHTML;
+  var match;
+
+  while (match = html.match(CALLSIGN_REGEX)) {
+    html = html.replace(match[1], '<call-sign>' + match[1] + '</call-sign>');
+  }
+
+  document.body.innerHTML = html;
+}
+
+if (document.getElementById('callsign-js').dataset.search == 'true') {
+  search_callsigns();
 }
 
 var callsign = new Callsign();

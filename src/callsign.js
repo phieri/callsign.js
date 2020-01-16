@@ -1,6 +1,6 @@
 /**
  * @file Highlight radio call signs (including amateur) in web pages with this JavaScript library.
- * @version 1.2.0
+ * @version 1.1.0
  * @author Philip Eriksson <https://www.philiperiksson.se>
  * @see {@link https://github.com/Lominean/callsign.js|Repository at GitHub}
  */
@@ -81,7 +81,6 @@ const CALLSIGN_REGEX = /(([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?)\s/;
 const PREFIX_REGEX = /([A-Z,\d]{1,3})\d/;
 
 class Callsign extends HTMLElement {
-
   constructor() {
     super();
 

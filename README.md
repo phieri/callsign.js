@@ -13,17 +13,17 @@ Add callsign.js and callsign.css in the `<head>` section.
 
 Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) `<call-sign>`.
 ```html
-<p>I heard <call-sign>SM8AYA</call-sign> and <call-sign>SA8YAY</call-sign> on shortwave.</p>
+<p>I had contact with <call-sign>SM8AYA</call-sign> and <call-sign>SA8YAY</call-sign> on shortwave.</p>
 ```
 
 # Options
 Options can be set as attributes in the `<link>` tag. The defaults are:
 
-| Name        | Default | Description |
-| ----------- | ------- | ----------- |
-| data-flag   | true    | Show country flag before the call signs. |
-| data-zero   | true    | Replace 0 with 0&#x0338; in call signs. |
-| data-search | false   | Search for untagged callsigns in the document. |
+| Name          | Default | Description |
+| ------------- | ------- | ----------- |
+| `data-flag`   | `true`  | Show country flag before the call signs. |
+| `data-zero`   | `true`  | Replace 0 (zero) with 0&#x0338; or &#216; in call signs. |
+| `data-search` | `false` | Search for untagged callsigns in the document. |
 
 # Minification
 This library is intentionally not provided with minified files.

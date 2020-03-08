@@ -1,4 +1,5 @@
 ![](https://github.com/Lominean/callsign.js/workflows/main.yml/badge.svg)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Lominean/callsign.js.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Lominean/callsign.js/context:javascript)
 
 # callsign.js
 This JavaScript library gives website users more ways to interract with written ITU call signs, including amateur radio.

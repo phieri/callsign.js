@@ -109,10 +109,6 @@ class Callsign extends HTMLElement {
     callsign_text.textContent = this.textContent;
     callsign_text.className = 'call-sign';
 
-    if (this.dataset.zero != 'false') {
-      this.innerHTML = this.innerHTML.replace(/0/, '0\u0338');
-    }
-
     var style = document.createElement('style');
     style.textContent = '@import url("callsign.css");';
 

@@ -10,6 +10,7 @@ call-sign {
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   border-left: none;
+  font-variant-numeric: slashed-zero;
 }
 
 .call-sign-flag {

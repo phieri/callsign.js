@@ -1,4 +1,4 @@
-call-sign,
+.call-sign,
 .call-sign-flag {
   display: inline;
   padding: 0 2px;
@@ -6,7 +6,7 @@ call-sign,
   font-family: monospace;
 }
 
-call-sign {
+.call-sign {
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
   border-left: none;

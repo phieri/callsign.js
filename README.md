@@ -30,6 +30,6 @@ Amateur radio is about learning and experimenting.
 Minified files makes it drastically harder to understand the code.
 
 # References
-* [ARTICLE 19 – Identification of stations](http://life.itu.int/radioclub/rr/art19.pdf)
+* [ITU Radio Regulations Article 19 – Identification of stations](http://life.itu.int/radioclub/rr/art19.pdf)
 * [ITU prefix – Wikipedia](https://en.wikipedia.org/wiki/ITU_prefix)
 * [ITU Table of Allocation of International Call Sign Series](https://www.arrl.org/international-call-sign-series)

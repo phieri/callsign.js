@@ -25,9 +25,9 @@ Options can be set as attributes in the `<link>` tag. The defaults are:
 | `data-search`    | `false` | Markup untagged callsigns in the document. |
 
 # Minification
-This library is intentionally not provided with minified files.
+These files are intentionally not provided minified.
 Amateur radio is about learning and experimenting.
-Minified files makes it drastically harder to understand how the code works.
+Minified files makes it drastically harder to understand the code.
 
 # References
 * [ARTICLE 19 – Identification of stations](http://life.itu.int/radioclub/rr/art19.pdf)

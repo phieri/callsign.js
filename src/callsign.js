@@ -147,6 +147,9 @@ class Callsign extends HTMLElement {
     return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
   }
 
+  /**
+   * Goes through the entire webpage and adds markup to untagged call signs.
+   */
   static searchCallsigns() {
     'use strict';
     let html = document.body.innerHTML;

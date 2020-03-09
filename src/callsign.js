@@ -75,10 +75,10 @@ const PREFIX_TABLE = {
 };
 
 /** @constant */
-const SEARCH_REGEX = /([A-Z,\d]{1,3}\d[A-Z]{1,3}\/?\d?)\s/;
+const SEARCH_REGEX = /([A-Z,\d]{1,3}\d[A-Z]{1,3}(?:\/\d)?)\s/;
 
 /** @constant */
-const PARTS_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?/;
+const PARTS_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})(?:\/(\d))?/;
 
 class Callsign extends HTMLElement {
   constructor() {

@@ -151,8 +151,8 @@ class Callsign extends HTMLElement {
 
 function search_callsigns() {
   'use strict';
-  var html = document.body.innerHTML;
-  var match;
+  let html = document.body.innerHTML;
+  let match;
 
   while (match = html.match(CALLSIGN_REGEX)) {
     html = html.replace(match[1], '<call-sign>' + match[1] + '</call-sign>');

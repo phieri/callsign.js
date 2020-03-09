@@ -7,7 +7,6 @@ This JavaScript library gives website users more ways to interact with written I
 # Usage
 Add callsign.js and callsign.css in the `<head>` section.
 ```html
-<link href="callsign.css" rel="stylesheet">
 <script id="callsign-js" src="callsign.js" defer></script>
 ```
 

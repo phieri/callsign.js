@@ -109,10 +109,11 @@ class Callsign extends HTMLElement {
     callsign_text.textContent = this.textContent;
     callsign_text.className = 'call-sign';
 
-    var style = document.createElement('style');
-    style.textContent = '@import url("callsign.css");';
+    let linkElement = document.createElement('link');
+    linkElement.setAttribute('rel', 'stylesheet');
+    linkElement.setAttribute('href', 'callsign.css');
 
-    shadow.appendChild(style);
+    shadow.appendChild(linkElement);
     shadow.appendChild(wrapper);
     wrapper.appendChild(flagElement);
     wrapper.appendChild(callsign_text);

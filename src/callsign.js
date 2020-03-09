@@ -89,9 +89,10 @@ class Callsign extends HTMLElement {
     });
 
     const wrapper = document.createElement('span');
-    wrapper.setAttribute('class', 'cs-wrapper');
     if (document.getElementById('callsign-js').dataset.monospace != 'false') {
       wrapper.setAttribute('class', 'cs-wrapper monospace');
+    } else {
+      wrapper.setAttribute('class', 'cs-wrapper');
     }
 
     const match = this.innerHTML.match(PARTS_REGEX);

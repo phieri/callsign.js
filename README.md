@@ -5,7 +5,7 @@
 This JavaScript library gives website users more ways to interact with written ITU call signs, including for amateur radio.
 
 # Usage
-Add callsign.js and callsign.css in the `<head>` section.
+Upload callsign.js and callsign.css to the webserver and add callsign.js to the `<head>` section.
 ```html
 <script id="callsign-js" src="callsign.js" defer></script>
 ```

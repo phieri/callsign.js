@@ -6,20 +6,20 @@
 
 .cs-wrapper :first-child {
   border: 1px solid #ddd;
+  border-right: none;
   border-bottom-left-radius: 3px;
   border-top-left-radius: 3px;
 }
 
 .cs-flag {
-  border-right: none;
-  background-color: #eee;
+  padding-right: 1px;
+  background-color: #ddd;
 }
 
 .cs-prefix {
   padding-left: 1px;
-  border: 1px solid #ddd;
-  border-left: none;
-  border-right: none;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 
 .cs-digit {

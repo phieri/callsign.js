@@ -75,10 +75,10 @@ const PREFIX_TABLE = {
 };
 
 /** @constant */
-const CALLSIGN_REGEX = /(([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?)\s/;
+const SEARCH_REGEX = /([A-Z,\d]{1,3}\d[A-Z]{1,3}\/?\d?)\s/;
 
 /** @constant */
-const PREFIX_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?/;
+const PARTS_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})\/?(\d)?/;
 
 class Callsign extends HTMLElement {
   constructor() {
@@ -94,7 +94,7 @@ class Callsign extends HTMLElement {
       wrapper.setAttribute('class', 'cs-wrapper monospace');
     }
 
-    const match = this.innerHTML.match(PREFIX_REGEX);
+    const match = this.innerHTML.match(PARTS_REGEX);
     const prefixFromElement = match[1];
     const digitFromElement = match[2];
     const suffixFromElement = match[3];
@@ -152,7 +152,7 @@ class Callsign extends HTMLElement {
     let html = document.body.innerHTML;
     let match;
 
-    while (match = html.match(CALLSIGN_REGEX)) {
+    while (match = html.match(SEARCH_REGEX)) {
       html = html.replace(match[1], '<call-sign>' + match[1] + '</call-sign>');
     }
 

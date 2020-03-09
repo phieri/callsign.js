@@ -1,23 +1,40 @@
-.call-sign,
-.call-sign-flag {
+.cs-wrapper {
   display: inline;
-  padding: 0 2px;
-  border: 1px solid #ddd;
-  font-family: monospace;
-}
-
-.call-sign {
-  border-bottom-right-radius: 3px;
-  border-top-right-radius: 3px;
-  border-left: none;
+  padding: 0;
   font-variant-numeric: slashed-zero;
 }
 
-.call-sign-flag {
+.cs-wrapper :first-child {
+  border: 1px solid #ddd;
   border-bottom-left-radius: 3px;
-  border-right: none;
   border-top-left-radius: 3px;
-  background-color: #ddd;
+}
+
+.cs-flag {
+  border-right: none;
+  background-color: #eee;
+}
+
+.cs-prefix {
+  padding-left: 1px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+}
+
+.cs-digit {
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+
+.cs-suffix {
+  padding-right: 1px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
 .monospace {
   font-family: monospace;
 }

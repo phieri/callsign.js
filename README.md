@@ -18,10 +18,11 @@ Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-U
 # Options
 Options can be set as attributes in the `<link>` tag. The defaults are:
 
-| Name          | Default | Description |
-| ------------- | ------- | ----------- |
-| `data-flag`   | `true`  | Show country flag before the call signs. |
-| `data-search` | `false` | Search for untagged callsigns in the document. |
+| Name             | Default | Description |
+| ---------------- | ------- | ----------- |
+| `data-flag`      | `true`  | Show country flag before the call signs. |
+| `data-monospace` | `true`  | Render call sign with a monospace font. |
+| `data-search`    | `false` | Markup untagged callsigns in the document. |
 
 # Minification
 This library is intentionally not provided with minified files.

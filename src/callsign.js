@@ -94,6 +94,10 @@ class Callsign extends HTMLElement {
     let prefixFromElement = this.innerHTML.match(PREFIX_REGEX)[1];
 
     let flagElement = document.createElement('span');
+    wrapper.setAttribute('class', 'cs-wrapper');
+    if (document.getElementById('callsign-js').dataset.monospace != 'false') {
+      wrapper.setAttribute('class', 'cs-wrapper monospace');
+    }
 
     for (let [iso, prefix] of Object.entries(PREFIX_TABLE)) {
       if (prefix.includes(prefixFromElement)) {

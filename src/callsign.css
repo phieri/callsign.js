@@ -18,4 +18,6 @@
   border-right: none;
   border-top-left-radius: 3px;
   background-color: #ddd;
+.monospace {
+  font-family: monospace;
 }

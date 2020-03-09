@@ -84,23 +84,23 @@ class Callsign extends HTMLElement {
   constructor() {
     super();
 
-    var shadow = this.attachShadow({
+    const shadow = this.attachShadow({
       mode: 'open'
     });
 
-    var wrapper = document.createElement('span');
+    const wrapper = document.createElement('span');
     wrapper.setAttribute('class', 'cs-wrapper');
     if (document.getElementById('callsign-js').dataset.monospace != 'false') {
       wrapper.setAttribute('class', 'cs-wrapper monospace');
     }
 
-    let match = this.innerHTML.match(PREFIX_REGEX);
-    let prefixFromElement = match[1];
-    let digitFromElement = match[2];
-    let suffixFromElement = match[3];
+    const match = this.innerHTML.match(PREFIX_REGEX);
+    const prefixFromElement = match[1];
+    const digitFromElement = match[2];
+    const suffixFromElement = match[3];
 
     if (document.getElementById('callsign-js').dataset.flag != 'false') {
-      let flagElement = document.createElement('span');
+      const flagElement = document.createElement('span');
 
       for (let [iso, prefix] of Object.entries(PREFIX_TABLE)) {
         if (prefix.includes(prefixFromElement)) {
@@ -114,26 +114,26 @@ class Callsign extends HTMLElement {
       wrapper.appendChild(flagElement);
     }
 
-    let callsignPrefix = document.createElement('span');
+    const callsignPrefix = document.createElement('span');
     callsignPrefix.textContent = prefixFromElement;
     callsignPrefix.className = 'cs-prefix';
+    wrapper.appendChild(callsignPrefix);
 
-    let callsignDigit = document.createElement('span');
+    const callsignDigit = document.createElement('span');
     callsignDigit.textContent = digitFromElement;
     callsignDigit.className = 'cs-digit';
+    wrapper.appendChild(callsignDigit);
 
-    let callsignSuffix = document.createElement('span');
+    const callsignSuffix = document.createElement('span');
     callsignSuffix.textContent = suffixFromElement;
     callsignSuffix.className = 'cs-suffix';
+    wrapper.appendChild(callsignSuffix);
 
-    let linkElement = document.createElement('link');
+    const linkElement = document.createElement('link');
     linkElement.setAttribute('rel', 'stylesheet');
     linkElement.setAttribute('href', 'callsign.css');
-
-    wrapper.appendChild(callsignPrefix);
-    wrapper.appendChild(callsignDigit);
-    wrapper.appendChild(callsignSuffix);
     shadow.appendChild(linkElement);
+
     shadow.appendChild(wrapper);
   }
 
@@ -146,23 +146,22 @@ class Callsign extends HTMLElement {
     'use strict';
     return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
   }
-}
 
+  static searchCallsigns() {
+    'use strict';
+    let html = document.body.innerHTML;
+    let match;
 
-function search_callsigns() {
-  'use strict';
-  let html = document.body.innerHTML;
-  let match;
+    while (match = html.match(CALLSIGN_REGEX)) {
+      html = html.replace(match[1], '<call-sign>' + match[1] + '</call-sign>');
+    }
 
-  while (match = html.match(CALLSIGN_REGEX)) {
-    html = html.replace(match[1], '<call-sign>' + match[1] + '</call-sign>');
+    document.body.innerHTML = html;
   }
-
-  document.body.innerHTML = html;
 }
 
 if (document.getElementById('callsign-js').dataset.search != 'false') {
-  search_callsigns();
+  Callsign.searchCallsigns();
 }
 
 customElements.define('call-sign', Callsign);

@@ -7,7 +7,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: ESLint Action
-      uses: hallee/eslint-action@1.0.1
+    - uses: actions/setup-node@v1
       with:
-        repo-token: ${{secrets.GITHUB_TOKEN}}
+        node-version: '12.x'

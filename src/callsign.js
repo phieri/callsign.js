@@ -156,7 +156,7 @@ class Callsign extends HTMLElement {
     let html = document.body.innerHTML;
     let match;
 
-    while (match = html.match(SEARCH_REGEX)) {
+    while ((match = html.match(SEARCH_REGEX)) !== null) {
       html = html.replace(match[1], '<call-sign>' + match[1] + '</call-sign>');
     }
 

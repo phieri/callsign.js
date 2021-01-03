@@ -23,10 +23,10 @@ Options can be set as attributes in the `<link>` tag.
 | `data-flag`      | `true`  | Show country flag before the call signs. |
 | `data-monospace` | `true`  | Render call sign with a monospace font. |
 | `data-phonetic`  | `true`  | Add phonetic information for screen readers. |
-| `data-search`    | `false` | Markup untagged call signs in the document. |
+| `data-search`    | `false` | Find and mark up untagged call signs in the document. |
 
 # Minification
-These files are intentionally not provided minified.
+The files are intentionally not provided [minified](https://en.wikipedia.org/wiki/Minification_(programming)).
 Amateur radio is about learning and experimenting.
 Minified files makes it drastically harder to understand the code.
 

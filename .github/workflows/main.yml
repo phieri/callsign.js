@@ -16,18 +16,4 @@ jobs:
         with:
           node-version: '14'
       - run: npm install
-      - run: npx eslint src/
-
-  build-jsdoc:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: JSDoc Action
-        uses: andstor/jsdoc-action@v1.2.0
-        with:
-          source_dir: ./src
-          output_dir: ./out
-      - uses: actions/upload-artifact@v2
-        with:
-          name: jsdoc
-          path: 'out/'
+      - run: npx eslint src/**

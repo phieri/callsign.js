@@ -140,10 +140,10 @@ class Callsign extends HTMLElement {
           flagElement.title = iso;
           flagElement.innerHTML = this.constructor.getFlag(iso);
           this.parentNode.insertBefore(flagElement, this);
+          wrapper.appendChild(flagElement);
           break;
         }
       }
-      wrapper.appendChild(flagElement);
     }
 
     Object.entries(found).forEach(function (part) {

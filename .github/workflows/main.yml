@@ -16,4 +16,4 @@ jobs:
         with:
           node-version: '14'
       - run: npm install
-      - run: npx eslint src/**
+      - run: npx eslint src/

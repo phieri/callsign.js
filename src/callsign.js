@@ -6,6 +6,36 @@
  */
 
 /** @constant */
+const NATO_LETTER_TABLE = {
+  A: 'alpha',
+  B: 'bravo',
+  C: 'charlie',
+  D: 'delta',
+  E: 'echo',
+  F: 'foxtrot',
+  G: 'golf',
+  H: 'hotel',
+  I: 'india',
+  J: 'juliet',
+  K: 'kilo',
+  L: 'lima',
+  M: 'mike',
+  N: 'november',
+  O: 'oscar',
+  P: 'papa',
+  Q: 'quebec',
+  R: 'romeo',
+  S: 'sierra',
+  T: 'tango',
+  U: 'uniform',
+  V: 'victor',
+  W: 'whiskey',
+  X: 'xray',
+  Y: 'yankee',
+  Z: 'zulu',
+};
+
+/** @constant */
 const PREFIX_TABLE = {
   AF: ['YA', 'T6'],
   AL: ['ZA'],

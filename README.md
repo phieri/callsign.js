@@ -22,6 +22,7 @@ Options can be set as attributes in the `<link>` tag.
 | ---------------- | ------- | ----------- |
 | `data-flag`      | `true`  | Show country flag before the call signs. |
 | `data-monospace` | `true`  | Render call sign with a monospace font. |
+| `data-phonetic`  | `true`  | Add phonetic information for screen readers. |
 | `data-search`    | `false` | Markup untagged call signs in the document. |
 
 # Minification

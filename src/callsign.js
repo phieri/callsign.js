@@ -141,7 +141,9 @@ class Callsign extends HTMLElement {
     found['digit'] = match[2];
     found['suffix'] = match[3];
 
-    wrapper.setAttribute("aria-label", Callsign.getPhonetics(match[0]));
+    if (document.getElementById('callsign-js').dataset.phonetic != 'false') {
+      wrapper.setAttribute("aria-label", Callsign.getPhonetics(match[0]));
+    }
 
     if (document.getElementById('callsign-js').dataset.flag != 'false') {
       const flagElement = document.createElement('span');
@@ -162,7 +164,9 @@ class Callsign extends HTMLElement {
       const newElement = document.createElement('span');
       newElement.textContent = part[1];
       newElement.className = 'cs-' + part[0];
-      newElement.setAttribute('aria-hidden', 'true');
+      if (document.getElementById('callsign-js').dataset.phonetic != 'false') {
+        newElement.setAttribute('aria-hidden', 'true');
+      }
       wrapper.appendChild(newElement);
     })
 

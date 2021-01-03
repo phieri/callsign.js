@@ -6,7 +6,7 @@
  */
 
 /** @constant */
-const ICAO_PHONETIC_ALPHABET = {
+const PHONETIC_ALPHABET = {
   A: 'Alfa',
   B: 'Bravo',
   C: 'Charlie',
@@ -33,6 +33,16 @@ const ICAO_PHONETIC_ALPHABET = {
   X: 'X-ray',
   Y: 'Yankee',
   Z: 'Zulu',
+  '0': 'Ziro',
+  '1': 'One',
+  '2': 'Two',
+  '3': 'Tree',
+  '4': 'Four',
+  '5': 'Fiver',
+  '6': 'Six',
+  '7': 'Seven',
+  '8': 'Eight',
+  '9': 'Niner',
 };
 
 /** @constant */
@@ -131,6 +141,8 @@ class Callsign extends HTMLElement {
     found['digit'] = match[2];
     found['suffix'] = match[3];
 
+    wrapper.setAttribute("aria-label", Callsign.getPhonetics(match[0]));
+
     if (document.getElementById('callsign-js').dataset.flag != 'false') {
       const flagElement = document.createElement('span');
 
@@ -150,6 +162,7 @@ class Callsign extends HTMLElement {
       const newElement = document.createElement('span');
       newElement.textContent = part[1];
       newElement.className = 'cs-' + part[0];
+      newElement.setAttribute('aria-hidden', 'true');
       wrapper.appendChild(newElement);
     })
 
@@ -169,6 +182,14 @@ class Callsign extends HTMLElement {
   static getFlag(code) {
     'use strict';
     return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
+  }
+
+  static getPhonetics(letters) {
+    let ret = "";
+    for (var i = 0; i < letters.length; i++) {
+      ret += PHONETIC_ALPHABET[letters.charAt(i)] + " ";
+    }
+    return ret.slice(0, -1);
   }
 
   /**

@@ -138,7 +138,7 @@ class Callsign extends HTMLElement {
         if (prefix.includes(found['prefix'])) {
           flagElement.className = 'cs-flag';
           flagElement.title = iso;
-          flagElement.innerHTML = this.constructor.getFlag(iso);
+          flagElement.innerHTML = Callsign.getFlag(iso);
           this.parentNode.insertBefore(flagElement, this);
           wrapper.appendChild(flagElement);
           break;

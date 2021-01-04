@@ -142,7 +142,9 @@ class Callsign extends HTMLElement {
     found['suffix'] = match[3];
 
     if (document.getElementById('callsign-js').dataset.phonetic != 'false') {
-      wrapper.setAttribute("aria-label", Callsign.getPhonetics(match[0]));
+      const phonetic = Callsign.getPhonetics(match[0]);
+      wrapper.setAttribute('aria-label', phonetic);
+      wrapper.setAttribute('title', phonetic);
     }
 
     if (document.getElementById('callsign-js').dataset.flag != 'false') {

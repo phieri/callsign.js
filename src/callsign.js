@@ -179,7 +179,7 @@ class Callsign extends HTMLElement {
   }
 
   /**
-   * Converts an ISO 3166-1 alpha-2 code to a Unicode Regional Indicator Symbol (emoji flag).
+   * Converts an ISO country code to a Unicode Regional Indicator Symbol (emoji flag).
    * @param {!string} code The ISO 3166-1 alpha-2 code
    * @returns {string}
    */
@@ -188,6 +188,10 @@ class Callsign extends HTMLElement {
     return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
   }
 
+  /**
+   * @param {string} letters The string of letters to expand
+   * @return {string}
+   */
   static getPhonetics(letters) {
     let ret = "";
     for (var i = 0; i < letters.length; i++) {

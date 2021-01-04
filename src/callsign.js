@@ -6,44 +6,44 @@
  */
 
 /** @constant */
-const PHONETIC_ALPHABET = {
-  A: 'Alfa',
-  B: 'Bravo',
-  C: 'Charlie',
-  D: 'Delta',
-  E: 'Echo',
-  F: 'Foxtrot',
-  G: 'Golf',
-  H: 'Hotel',
-  I: 'India',
-  J: 'Juliett',
-  K: 'Kilo',
-  L: 'Lima',
-  M: 'Mike',
-  N: 'November',
-  O: 'Oscar',
-  P: 'Papa',
-  Q: 'Quebec',
-  R: 'Romeo',
-  S: 'Sierra',
-  T: 'Tango',
-  U: 'Uniform',
-  V: 'Victor',
-  W: 'Whiskey',
-  X: 'X-ray',
-  Y: 'Yankee',
-  Z: 'Zulu',
-  '0': 'Ziro',
-  '1': 'One',
-  '2': 'Two',
-  '3': 'Tree',
-  '4': 'Four',
-  '5': 'Five',
-  '6': 'Six',
-  '7': 'Seven',
-  '8': 'Eight',
-  '9': 'Niner',
-};
+const PHONETIC_ALPHABET = new Map([
+  ['A', 'Alfa'],
+  ['B', 'Bravo'],
+  ['C', 'Charlie'],
+  ['D', 'Delta'],
+  ['E', 'Echo'],
+  ['F', 'Foxtrot'],
+  ['G', 'Golf'],
+  ['H', 'Hotel'],
+  ['I', 'India'],
+  ['J', 'Juliett'],
+  ['K', 'Kilo'],
+  ['L', 'Lima'],
+  ['M', 'Mike'],
+  ['N', 'November'],
+  ['O', 'Oscar'],
+  ['P', 'Papa'],
+  ['Q', 'Quebec'],
+  ['R', 'Romeo'],
+  ['S', 'Sierra'],
+  ['T', 'Tango'],
+  ['U', 'Uniform'],
+  ['V', 'Victor'],
+  ['W', 'Whiskey'],
+  ['X', 'X-ray'],
+  ['Y', 'Yankee'],
+  ['Z', 'Zulu'],
+  ['0', 'Ziro'],
+  ['1', 'One'],
+  ['2', 'Two'],
+  ['3', 'Tree'],
+  ['4', 'Four'],
+  ['5', 'Five'],
+  ['6', 'Six'],
+  ['7', 'Seven'],
+  ['8', 'Eight'],
+  ['9', 'Niner'],
+]);
 
 /** @constant */
 const PREFIX_TABLE = {
@@ -136,10 +136,10 @@ class Callsign extends HTMLElement {
     }
 
     const match = this.innerHTML.match(PARTS_REGEX);
-    const found = [];
-    found['prefix'] = match[1];
-    found['digit'] = match[2];
-    found['suffix'] = match[3];
+    const found = new Map();
+    found.set('prefix', match[1]);
+    found.set('digit', match[2]);
+    found.set('suffix', match[3]);
 
     if (document.getElementById('callsign-js').dataset.phonetic != 'false') {
       const phonetic = Callsign.getPhonetics(match[0]);
@@ -151,7 +151,7 @@ class Callsign extends HTMLElement {
       const flagElement = document.createElement('span');
 
       for (let [iso, prefix] of Object.entries(PREFIX_TABLE)) {
-        if (prefix.includes(found['prefix'])) {
+        if (prefix.includes(found.get('prefix'))) {
           flagElement.className = 'cs-flag';
           flagElement.title = iso;
           flagElement.innerHTML = Callsign.getFlag(iso);
@@ -162,15 +162,15 @@ class Callsign extends HTMLElement {
       }
     }
 
-    Object.entries(found).forEach(function (part) {
+    for (let [key, value] of found) {
       const newElement = document.createElement('span');
-      newElement.textContent = part[1];
-      newElement.className = 'cs-' + part[0];
+      newElement.textContent = value;
+      newElement.className = 'cs-' + key;
       if (document.getElementById('callsign-js').dataset.phonetic != 'false') {
         newElement.setAttribute('aria-hidden', 'true');
       }
       wrapper.appendChild(newElement);
-    })
+    }
 
     const linkElement = document.createElement('link');
     linkElement.setAttribute('rel', 'stylesheet');
@@ -195,9 +195,10 @@ class Callsign extends HTMLElement {
    * @return {string}
    */
   static getPhonetics(letters) {
+    'use strict';
     let ret = "";
     for (var i = 0; i < letters.length; i++) {
-      ret += PHONETIC_ALPHABET[letters.charAt(i)] + " ";
+      ret += PHONETIC_ALPHABET.get(letters.charAt(i)) + " ";
     }
     return ret.slice(0, -1);
   }

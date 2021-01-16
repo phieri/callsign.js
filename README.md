@@ -12,7 +12,7 @@ Upload callsign.js and callsign.css to the webserver and add callsign.js to the 
 
 Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) `<call-sign>`:
 ```html
-<p>I had contact with <call-sign>SM8AYA</call-sign> and <call-sign>SA8YAY</call-sign> on shortwave.</p>
+<p>I had contact with <call-sign>SM8AYA</call-sign> on shortwave.</p>
 ```
 
 # Options

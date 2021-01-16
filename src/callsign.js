@@ -192,7 +192,7 @@ class Callsign extends HTMLElement {
 
   /**
    * @param {string} letters The string of letters to expand
-   * @return {string}
+   * @returns {string}
    */
   static getPhonetics(letters) {
     'use strict';

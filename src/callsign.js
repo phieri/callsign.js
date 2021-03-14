@@ -6,7 +6,7 @@
  */
 
 /** @constant */
-const PHONETIC_ALPHABET = new Map([
+const PHONETIC_TABLE = new Map([
   ['A', 'Alfa'],
   ['B', 'Bravo'],
   ['C', 'Charlie'],
@@ -198,7 +198,7 @@ class Callsign extends HTMLElement {
     'use strict';
     let ret = "";
     for (var i = 0; i < letters.length; i++) {
-      ret += PHONETIC_ALPHABET.get(letters.charAt(i)) + " ";
+      ret += PHONETIC_TABLE.get(letters.charAt(i)) + " ";
     }
     return ret.slice(0, -1);
   }

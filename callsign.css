@@ -1,0 +1,40 @@
+.cs-wrapper {
+  display: inline;
+  padding: 0;
+  font-variant-numeric: slashed-zero;
+}
+
+.cs-wrapper :first-child {
+  border: 1px solid #ddd;
+  border-right: none;
+  border-bottom-left-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.cs-flag {
+  padding-right: 1px;
+  background-color: #ddd;
+}
+
+.cs-prefix {
+  padding-left: 1px;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+
+.cs-digit {
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+
+.cs-suffix {
+  padding-right: 1px;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.monospace {
+  font-family: monospace;
+}

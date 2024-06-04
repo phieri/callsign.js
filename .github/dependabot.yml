@@ -4,7 +4,15 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      actions-packages:
+        patterns:
+          - '*'
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      npm-packages:
+        patterns:
+          - '*'

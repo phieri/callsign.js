@@ -2,7 +2,7 @@ import js from "@eslint/js";
 
 export default [
   {
-    js.configs.recommended,
+    ...js.configs.recommended,
     "rules": {
       "indent": ["error", 2],
       "complexity": ["error"],

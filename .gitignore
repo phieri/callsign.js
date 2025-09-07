@@ -1,3 +1,4 @@
 *.min.*
 node_modules/
 package-lock.json
+test-page.html

@@ -24,6 +24,33 @@ Options can be set as attributes in the `<link>` tag.
 | `data-phonetic`  | `true`  | Add phonetic information for screen readers. |
 | `data-search`    | `false` | Find and mark up untagged call signs in the document. |
 
+# Testing
+This project includes unit tests using Jest to ensure code quality and functionality.
+
+## Running Tests
+```bash
+# Install dependencies
+npm install
+
+# Run all tests
+npm test
+
+# Run linting
+npm run lint
+```
+
+## Test Coverage
+The test suite covers three core functionalities:
+
+1. **`getFlag` Method**: Tests conversion of ISO country codes to Unicode Regional Indicator Symbols (emoji flags)
+2. **`getPhonetics` Method**: Tests mapping of characters to their phonetic alphabet equivalents
+3. **`searchCallsigns` Method**: Tests basic functionality for detecting and wrapping untagged call signs
+
+Test files are located in the `tests/` directory:
+- `tests/getFlag.test.js` - Flag generation tests
+- `tests/getPhonetics.test.js` - Phonetic alphabet tests  
+- `tests/searchCallsigns.test.js` - Call sign detection tests
+
 # Minification
 The files are intentionally not provided [minified](https://en.wikipedia.org/wiki/Minification_(programming)).
 Amateur radio is about learning and experimenting.

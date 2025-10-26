@@ -25,7 +25,7 @@ Options can be set as attributes in the `<link>` tag.
 | `data-search`    | `false` | Find and mark up untagged call signs in the document. |
 
 # Testing
-This project includes unit tests using Jest to ensure code quality and functionality.
+This project includes comprehensive unit tests using Jest with a primary focus on regex pattern validation.
 
 ## Running Tests
 ```bash
@@ -39,17 +39,32 @@ npm test
 npm run lint
 ```
 
-## Test Coverage
-The test suite covers three core functionalities:
+## Test Coverage (71 tests total)
+The test suite focuses primarily on validating the two core regex patterns that drive the library's functionality:
 
-1. **`getFlag` Method**: Tests conversion of ISO country codes to Unicode Regional Indicator Symbols (emoji flags)
-2. **`getPhonetics` Method**: Tests mapping of characters to their phonetic alphabet equivalents
-3. **`searchCallsigns` Method**: Tests basic functionality for detecting and wrapping untagged call signs
+### 1. **SEARCH_REGEX Pattern Tests** (`tests/searchCallsigns.test.js`)
+Tests the regex pattern `/([A-Z,\d]{1,3}\d[A-Z]{1,3}(?:\/\d)?)\s/` that detects call signs in text:
+- Valid call sign pattern matching (single/double/triple letter prefixes)
+- Portable indicator detection (`/3`, `/5`, etc.)
+- Edge cases and boundary conditions
+- Invalid pattern rejection (no trailing space, wrong format, etc.)
+- Real-world call sign examples from multiple countries
+- Whitespace handling and greedy matching behavior
 
-Test files are located in the `tests/` directory:
-- `tests/getFlag.test.js` - Flag generation tests
-- `tests/getPhonetics.test.js` - Phonetic alphabet tests  
-- `tests/searchCallsigns.test.js` - Call sign detection tests
+### 2. **PARTS_REGEX Pattern Tests** (`tests/partsRegex.test.js`)
+Tests the regex pattern `/([A-Z,\d]{1,3})(\d)([A-Z]{1,3})(?:\/(\d))?/` that parses call signs into components:
+- Prefix parsing (1-3 characters: W, SM, VK2, etc.)
+- Area digit extraction (0-9)
+- Suffix parsing (1-3 letters: A, AB, ABC)
+- Portable indicator capture group
+- Greedy matching behavior with long prefixes
+- Component extraction from embedded text
+
+### 3. **Supporting Method Tests**
+- `tests/getFlag.test.js` - ISO code to Unicode flag conversion (used after PREFIX_TABLE matching)
+- `tests/getPhonetics.test.js` - Phonetic alphabet mapping for regex-parsed call signs
+
+Test files are located in the `tests/` directory with clear documentation of each regex pattern's behavior and edge cases.
 
 # Minification
 The files are intentionally not provided [minified](https://en.wikipedia.org/wiki/Minification_(programming)).

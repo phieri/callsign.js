@@ -314,7 +314,7 @@ class Callsign extends HTMLElement {
     for (const [key, value] of parts) {
       const partElement = document.createElement('span');
       partElement.textContent = value;
-      partElement.className = 'cs-' + key;
+      partElement.className = `cs-${key}`;
       if (configuration.phonetic !== 'false') {
         partElement.setAttribute('aria-hidden', 'true');
       }
@@ -362,11 +362,11 @@ class Callsign extends HTMLElement {
    * @returns {string}
    */
   static getPhonetics(letters) {
-    let ret = "";
+    let ret = '';
     for (let i = 0; i < letters.length; i++) {
       const phonetic = PHONETIC_TABLE.get(letters.charAt(i));
       if (phonetic) {
-        ret += phonetic + " ";
+        ret += `${phonetic} `;
       }
     }
     return ret.slice(0, -1);
@@ -382,7 +382,7 @@ class Callsign extends HTMLElement {
       document.body,
       NodeFilter.SHOW_TEXT,
       {
-        acceptNode: function(node) {
+        acceptNode(node) {
           // Skip script and style elements
           const parent = node.parentElement;
           if (!parent || parent.tagName === 'SCRIPT' || 
@@ -415,7 +415,7 @@ class Callsign extends HTMLElement {
       let lastIndex = 0;
       const regex = new RegExp(SEARCH_REGEX, 'g');
 
-      while ((match = regex.exec(text + ' ')) !== null) {
+      while ((match = regex.exec(`${text} `)) !== null) {
         matches.push({
           callsign: match[1],
           index: match.index,

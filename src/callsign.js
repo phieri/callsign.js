@@ -215,9 +215,69 @@ const SEARCH_REGEX = /([A-Z,\d]{1,3}\d[A-Z]{1,3}(?:\/\d)?)\s/;
 /** @constant */
 const PARTS_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})(?:\/(\d))?/;
 
+/** @constant */
+const DEFAULT_CSS_PATH = 'callsign.css';
+
+// Cache script element and configuration
+let scriptElement = null;
+let config = null;
+
+/**
+ * Gets the script element and caches it
+ * @returns {HTMLScriptElement|null}
+ */
+function getScriptElement() {
+  if (!scriptElement) {
+    scriptElement = document.getElementById('callsign-js');
+  }
+  return scriptElement;
+}
+
+/**
+ * Gets configuration from script element dataset
+ * @returns {Object}
+ */
+function getConfig() {
+  if (!config) {
+    const script = getScriptElement();
+    if (!script) {
+      console.warn('callsign.js: Script element with id="callsign-js" not found');
+      return {
+        flag: 'true',
+        monospace: 'true',
+        phonetic: 'true',
+        search: 'false',
+        cssPath: DEFAULT_CSS_PATH
+      };
+    }
+    config = {
+      flag: script.dataset.flag || 'true',
+      monospace: script.dataset.monospace || 'true',
+      phonetic: script.dataset.phonetic || 'true',
+      search: script.dataset.search || 'false',
+      cssPath: script.dataset.cssPath || DEFAULT_CSS_PATH
+    };
+  }
+  return config;
+}
+
+/**
+ * Custom element for rendering radio call signs with country flags and phonetic information
+ * @extends HTMLElement
+ */
 class Callsign extends HTMLElement {
   constructor() {
     super();
+
+    const configuration = getConfig();
+    const callsignText = this.innerHTML.trim();
+    
+    // Validate call sign format
+    const match = callsignText.match(PARTS_REGEX);
+    if (!match) {
+      console.warn(`callsign.js: Invalid call sign format: ${callsignText}`);
+      return;
+    }
 
     const shadow = this.attachShadow({
       mode: 'open'
@@ -225,54 +285,67 @@ class Callsign extends HTMLElement {
 
     const wrapper = document.createElement('span');
     wrapper.classList.add('cs-wrapper');
-    if (document.getElementById('callsign-js').dataset.monospace != 'false') {
+    if (configuration.monospace !== 'false') {
       wrapper.classList.add('monospace');
     }
 
-    const match = this.innerHTML.match(PARTS_REGEX);
-    const found = new Map([
+    const parts = new Map([
       ['prefix', match[1]],
       ['digit', match[2]],
       ['suffix', match[3]],
     ]);
 
-    if (document.getElementById('callsign-js').dataset.phonetic != 'false') {
+    // Add phonetic information
+    if (configuration.phonetic !== 'false') {
       const phonetic = Callsign.getPhonetics(match[0]);
       wrapper.setAttribute('aria-label', phonetic);
       wrapper.setAttribute('title', phonetic);
     }
 
-    if (document.getElementById('callsign-js').dataset.flag != 'false') {
-      const flagElement = document.createElement('span');
-
-      for (let [iso, prefix] of PREFIX_TABLE) {
-        if (prefix.includes(found.get('prefix'))) {
-          flagElement.className = 'cs-flag';
-          flagElement.title = iso;
-          flagElement.innerHTML = Callsign.getFlag(iso);
-          this.parentNode.insertBefore(flagElement, this);
-          wrapper.appendChild(flagElement);
-          break;
-        }
+    // Add country flag
+    if (configuration.flag !== 'false') {
+      const flagElement = this.createFlagElement(parts.get('prefix'));
+      if (flagElement) {
+        wrapper.appendChild(flagElement);
       }
     }
 
-    for (let [key, value] of found) {
-      const newElement = document.createElement('span');
-      newElement.textContent = value;
-      newElement.className = 'cs-' + key;
-      if (document.getElementById('callsign-js').dataset.phonetic != 'false') {
-        newElement.setAttribute('aria-hidden', 'true');
+    // Add call sign parts
+    for (const [key, value] of parts) {
+      const partElement = document.createElement('span');
+      partElement.textContent = value;
+      partElement.className = `cs-${key}`;
+      if (configuration.phonetic !== 'false') {
+        partElement.setAttribute('aria-hidden', 'true');
       }
-      wrapper.appendChild(newElement);
+      wrapper.appendChild(partElement);
     }
 
+    // Add stylesheet
     const linkElement = document.createElement('link');
     linkElement.setAttribute('rel', 'stylesheet');
-    linkElement.setAttribute('href', 'callsign.css');
+    linkElement.setAttribute('href', configuration.cssPath);
     shadow.appendChild(linkElement);
 
     shadow.appendChild(wrapper);
+  }
+
+  /**
+   * Creates a flag element for the given prefix
+   * @param {string} prefix - The call sign prefix
+   * @returns {HTMLSpanElement|null}
+   */
+  createFlagElement(prefix) {
+    for (const [iso, prefixes] of PREFIX_TABLE) {
+      if (prefixes.includes(prefix)) {
+        const flagElement = document.createElement('span');
+        flagElement.className = 'cs-flag';
+        flagElement.title = iso;
+        flagElement.textContent = Callsign.getFlag(iso);
+        return flagElement;
+      }
+    }
+    return null;
   }
 
   /**
@@ -281,7 +354,6 @@ class Callsign extends HTMLElement {
    * @returns {string}
    */
   static getFlag(code) {
-    'use strict';
     return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
   }
 
@@ -290,32 +362,106 @@ class Callsign extends HTMLElement {
    * @returns {string}
    */
   static getPhonetics(letters) {
-    'use strict';
-    let ret = "";
-    for (var i = 0; i < letters.length; i++) {
-      ret += PHONETIC_TABLE.get(letters.charAt(i)) + " ";
+    let ret = '';
+    for (let i = 0; i < letters.length; i++) {
+      const phonetic = PHONETIC_TABLE.get(letters.charAt(i));
+      if (phonetic) {
+        ret += `${phonetic} `;
+      }
     }
     return ret.slice(0, -1);
   }
 
   /**
    * Goes through the entire webpage and adds markup to untagged call signs.
+   * Uses TreeWalker to safely traverse text nodes without modifying innerHTML.
    */
   static searchCallsigns() {
-    'use strict';
-    let html = document.body.innerHTML;
-    let match;
+    // Create a TreeWalker to find all text nodes
+    const walker = document.createTreeWalker(
+      document.body,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode(node) {
+          // Skip script and style elements
+          const parent = node.parentElement;
+          if (!parent || parent.tagName === 'SCRIPT' || 
+              parent.tagName === 'STYLE' || 
+              parent.tagName === 'CALL-SIGN') {
+            return NodeFilter.FILTER_REJECT;
+          }
+          // Only accept nodes with potential call signs
+          if (SEARCH_REGEX.test(node.textContent)) {
+            return NodeFilter.FILTER_ACCEPT;
+          }
+          return NodeFilter.FILTER_REJECT;
+        }
+      }
+    );
 
-    while ((match = html.match(SEARCH_REGEX)) !== null) {
-      html = html.replace(match[1], '<call-sign>' + match[1] + '</call-sign>');
+    const nodesToReplace = [];
+    let currentNode;
+
+    // Collect nodes to replace (can't modify while walking)
+    while ((currentNode = walker.nextNode())) {
+      nodesToReplace.push(currentNode);
     }
 
-    document.body.innerHTML = html;
+    // Process each text node
+    for (const node of nodesToReplace) {
+      const text = node.textContent;
+      const matches = [];
+      let match;
+      let lastIndex = 0;
+      const regex = new RegExp(SEARCH_REGEX, 'g');
+
+      while ((match = regex.exec(`${text} `)) !== null) {
+        matches.push({
+          callsign: match[1],
+          index: match.index,
+          length: match[1].length
+        });
+      }
+
+      if (matches.length > 0) {
+        const parent = node.parentNode;
+        const fragment = document.createDocumentFragment();
+        lastIndex = 0;
+
+        for (const matchInfo of matches) {
+          // Add text before the call sign
+          if (matchInfo.index > lastIndex) {
+            fragment.appendChild(
+              document.createTextNode(text.substring(lastIndex, matchInfo.index))
+            );
+          }
+
+          // Create call-sign element
+          const callsignElement = document.createElement('call-sign');
+          callsignElement.textContent = matchInfo.callsign;
+          fragment.appendChild(callsignElement);
+
+          lastIndex = matchInfo.index + matchInfo.length;
+        }
+
+        // Add remaining text
+        if (lastIndex < text.length) {
+          fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+        }
+
+        parent.replaceChild(fragment, node);
+      }
+    }
   }
 }
 
-if (document.getElementById('callsign-js').dataset.search != 'false') {
-  Callsign.searchCallsigns();
+// Initialize when DOM is ready
+if (getConfig().search !== 'false') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => Callsign.searchCallsigns());
+  } else {
+    Callsign.searchCallsigns();
+  }
 }
 
 customElements.define('call-sign', Callsign);

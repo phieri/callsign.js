@@ -15,7 +15,7 @@ Tag the call signs with the [custom HTML tag](https://developer.mozilla.org/en-U
 ```
 
 # Options
-Options can be set as attributes in the `<link>` tag.
+Options can be set as attributes in the `<script>` tag.
 
 | Name             | Default | Description |
 | ---------------- | ------- | ----------- |
@@ -23,6 +23,17 @@ Options can be set as attributes in the `<link>` tag.
 | `data-monospace` | `true`  | Render call sign with a monospace font. |
 | `data-phonetic`  | `true`  | Add phonetic information for screen readers. |
 | `data-search`    | `false` | Find and mark up untagged call signs in the document. |
+| `data-css-path`  | `callsign.css` | Custom path to the CSS stylesheet. |
+
+## Customization
+You can customize the appearance by overriding CSS custom properties in your stylesheet:
+```css
+call-sign::part(wrapper) {
+  --cs-border-color: #007acc;
+  --cs-background-color: #e0f0ff;
+  --cs-border-radius: 5px;
+}
+```
 
 # Testing
 This project includes comprehensive unit tests using Jest with a primary focus on regex pattern validation.

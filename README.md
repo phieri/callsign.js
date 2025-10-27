@@ -1,5 +1,3 @@
-![CI](https://github.com/phieri/callsign.js/workflows/CI/badge.svg)
-
 # callsign.js
 This JavaScript library gives website users more ways to interact with written [ITU](https://www.itu.int/en/) call signs, including for amateur radio.
 

@@ -3,31 +3,178 @@
 
 <head>
   <meta charset="utf-8">
-  <title>callsign.js example page</title>
+  <title>callsign.js - ITU Radio Call Sign Library</title>
+  <meta name="description" content="A JavaScript library for enhancing ITU radio call signs on web pages with country flags, phonetic information, and interactive features.">
   <meta name="color-scheme" content="light dark">
   <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.classless.min.css">
   <link rel="stylesheet" href="callsign.css">
+  <link rel="stylesheet" href="docs.css">
   <script id="callsign-js" src="callsign.js" data-flag="true" data-monospace="true" data-phonetic="true" data-search="true" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
   <header>
-    <h1>callsign.js example page</h1>
+    <div class="hero">
+      <h1>📻 callsign.js</h1>
+      <p class="subtitle">Enhance ITU radio call signs on your web pages</p>
+      <p class="tagline">Interactive call signs with country flags, phonetic information, and automatic detection</p>
+      <div class="header-links">
+        <a href="https://github.com/phieri/callsign.js" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          View on GitHub
+        </a>
+        <a href="#getting-started" class="btn btn-secondary">Get Started</a>
+      </div>
+    </div>
   </header>
+
   <main>
-    <ul>
-      <li>Marked up: <call-sign>ZR9OOO</call-sign> and so on.</li>
-      <li>Marked up and contains zero: <call-sign>LN0ABC</call-sign> and so on.</li>
-      <li>Not marked up: SA9BC and so on.</li>
-      <li>Not marked up OY9ZZZ and so on.</li>
-      <li>Marked up and contains a zero:
-        <call-sign>OM0ZAS</call-sign>. More text. More <strong>random text</strong> and so on.</li>
-      <li>Not marked up and with a prefix that is not in use: YN9ZZZ and so on.</li>
-    </ul>
+    <section id="demo">
+      <h2>✨ Live Demo</h2>
+      <p>See the library in action! Call signs below are automatically detected and enhanced with country flags and phonetic information:</p>
+      
+      <div class="demo-grid">
+        <div class="demo-card">
+          <h3>Marked up call signs</h3>
+          <p>Using the <code>&lt;call-sign&gt;</code> tag:</p>
+          <ul>
+            <li>South African: <call-sign>ZR9OOO</call-sign></li>
+            <li>Norwegian: <call-sign>LN0ABC</call-sign></li>
+            <li>Slovak: <call-sign>OM0ZAS</call-sign></li>
+          </ul>
+        </div>
+
+        <div class="demo-card">
+          <h3>Auto-detected call signs</h3>
+          <p>With <code>data-search="true"</code> enabled:</p>
+          <ul>
+            <li>Swedish: SA9BC recognized automatically</li>
+            <li>Danish: OY9ZZZ also detected</li>
+            <li>Invalid: YN9ZZZ not in ITU table</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>🎯 Features</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚩</div>
+          <h3>Country Flags</h3>
+          <p>Automatically displays the country flag for each recognized call sign prefix</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔤</div>
+          <h3>Phonetic Alphabet</h3>
+          <p>Provides NATO phonetic spelling in tooltips and for screen readers</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Auto-Detection</h3>
+          <p>Optionally finds and highlights untagged call signs in your content</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">♿</div>
+          <h3>Accessible</h3>
+          <p>Built with accessibility in mind, including proper ARIA labels</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <h3>Customizable</h3>
+          <p>Style call signs using CSS custom properties for theming</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Lightweight</h3>
+          <p>No dependencies, works directly in the browser</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="getting-started">
+      <h2>🚀 Getting Started</h2>
+      
+      <div class="step">
+        <h3>1. Include the library</h3>
+        <p>Add callsign.js to your HTML <code>&lt;head&gt;</code> section:</p>
+        <pre><code>&lt;script id="callsign-js" src="callsign.js" defer&gt;&lt;/script&gt;</code></pre>
+      </div>
+
+      <div class="step">
+        <h3>2. Tag your call signs</h3>
+        <p>Wrap call signs with the custom <code>&lt;call-sign&gt;</code> element:</p>
+        <pre><code>&lt;p&gt;I had contact with &lt;call-sign&gt;SM8AYA&lt;/call-sign&gt; on shortwave.&lt;/p&gt;</code></pre>
+      </div>
+
+      <div class="step">
+        <h3>3. Configure options (optional)</h3>
+        <p>Customize behavior with data attributes:</p>
+        <pre><code>&lt;script id="callsign-js" src="callsign.js" 
+  data-flag="true" 
+  data-monospace="true"
+  data-phonetic="true"
+  data-search="true"
+  defer&gt;&lt;/script&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="options">
+      <h2>⚙️ Configuration Options</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>data-flag</code></td>
+            <td><code>true</code></td>
+            <td>Show country flag emoji before call signs</td>
+          </tr>
+          <tr>
+            <td><code>data-monospace</code></td>
+            <td><code>true</code></td>
+            <td>Render call signs with monospace font</td>
+          </tr>
+          <tr>
+            <td><code>data-phonetic</code></td>
+            <td><code>true</code></td>
+            <td>Add phonetic spelling for screen readers</td>
+          </tr>
+          <tr>
+            <td><code>data-search</code></td>
+            <td><code>false</code></td>
+            <td>Automatically detect and mark up untagged call signs</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="about">
+      <h2>📖 About</h2>
+      <p>This library highlights <a href="https://www.itu.int/en/" target="_blank" rel="noopener">ITU</a> radio call signs (including amateur radio) on web pages, making them more interactive and informative. The code is intentionally not minified to support the amateur radio community's learning and experimentation goals.</p>
+      <p class="muted">Amateur radio is about learning and experimenting. Minified files make it drastically harder to understand the code.</p>
+    </section>
   </main>
+
   <footer>
-    <a href="https://github.com/phieri/callsign.js" hreflang="en">[ GitHub ]</a>
+    <div class="footer-content">
+      <p>
+        <strong>callsign.js</strong> - Open source under the MIT License
+      </p>
+      <p>
+        <a href="https://github.com/phieri/callsign.js">GitHub</a> ·
+        <a href="https://github.com/phieri/callsign.js/issues">Issues</a> ·
+        <a href="https://github.com/phieri/callsign.js/blob/main/LICENSE">License</a>
+      </p>
+    </div>
   </footer>
 </body>
 

@@ -1,6 +1,9 @@
 # callsign.js
 This JavaScript library gives website users more ways to interact with written [ITU](https://www.itu.int/en/) call signs, including for amateur radio.
 
+## Demo
+See a live example at [https://phieri.github.io/callsign.js/](https://phieri.github.io/callsign.js/)
+
 # Usage
 Upload callsign.js and callsign.css to the webserver and add callsign.js to the `<head>` section.
 ```html

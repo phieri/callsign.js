@@ -3,3 +3,5 @@ node_modules/
 package-lock.json
 test-page.html
 test.html
+docs/callsign.js
+docs/callsign.css

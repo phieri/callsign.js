@@ -33,10 +33,19 @@
 .hero h1 {
   font-size: 3rem;
   margin-bottom: 0.5rem;
+  color: var(--primary-color);
   background: linear-gradient(135deg, var(--primary-color), var(--success-color));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Fallback for browsers without background-clip support or high contrast mode */
+@supports not (background-clip: text) or not (-webkit-background-clip: text) {
+  .hero h1 {
+    color: var(--primary-color);
+    background: none;
+  }
 }
 
 .hero .subtitle {
@@ -192,7 +201,7 @@ code {
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-size: 0.9em;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Courier New', Courier, monospace;
 }
 
 pre code {

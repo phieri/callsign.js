@@ -1,0 +1,59 @@
+/**
+ * Callsign.js Stylesheet
+ * Styles for rendering ITU radio call signs with visual structure
+ */
+
+:host {
+  /* CSS Custom Properties for easy theming */
+  --cs-border-color: #ddd;
+  --cs-background-color: #ddd;
+  --cs-border-radius: 3px;
+  --cs-border-width: 1px;
+}
+
+.cs-wrapper {
+  display: inline;
+  padding: 0;
+  font-variant-numeric: slashed-zero;
+}
+
+/* First child styling (usually the flag) */
+.cs-wrapper :first-child {
+  border: var(--cs-border-width) solid var(--cs-border-color);
+  border-right: none;
+  border-bottom-left-radius: var(--cs-border-radius);
+  border-top-left-radius: var(--cs-border-radius);
+}
+
+/* Country flag */
+.cs-flag {
+  padding-right: 1px;
+  background-color: var(--cs-background-color);
+}
+
+/* Call sign prefix */
+.cs-prefix {
+  padding-left: 1px;
+  border-bottom: var(--cs-border-width) solid var(--cs-border-color);
+  border-top: var(--cs-border-width) solid var(--cs-border-color);
+}
+
+/* Call sign digit */
+.cs-digit {
+  border-bottom: var(--cs-border-width) solid var(--cs-border-color);
+  border-top: var(--cs-border-width) solid var(--cs-border-color);
+}
+
+/* Call sign suffix */
+.cs-suffix {
+  padding-right: 1px;
+  border: var(--cs-border-width) solid var(--cs-border-color);
+  border-left: none;
+  border-bottom-right-radius: var(--cs-border-radius);
+  border-top-right-radius: var(--cs-border-radius);
+}
+
+/* Monospace font option */
+.monospace {
+  font-family: monospace;
+}

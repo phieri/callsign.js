@@ -24,6 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
       
+      - name: Prepare deployment directory
+        run: |
+          cp src/callsign.js docs/
+          cp src/callsign.css docs/
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
       

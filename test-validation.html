@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>callsign.js - Prefix Validation Test</title>
+    <script id="callsign-js" src="src/callsign.js" data-search="true" defer></script>
+    <link rel="stylesheet" href="src/callsign.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #2c5aa0;
+        }
+        .explanation {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        .valid-calls {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            margin: 10px 0;
+        }
+        .invalid-calls {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 4px solid #dc3545;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>callsign.js - Prefix Validation Test Page</h1>
+    
+    <div class="explanation">
+        <strong>What this test demonstrates:</strong>
+        <p>This page tests that the search function (data-search="true") only marks up call signs that have valid prefixes registered in the PREFIX_TABLE. Call signs with invalid or unregistered prefixes should NOT be highlighted.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>✅ Valid Call Signs (Should be marked up with flags)</h2>
+        <div class="valid-calls">
+            <p>US call signs: W1AW is famous, K2ABC works 40m, and N3XYZ is on 2m.</p>
+            <p>US two-letter prefixes: AA1AA called CQ, AB2CD worked DX today.</p>
+            <p>International: SM8AYA from Sweden, DL1ABC from Germany, G0XYZ from UK.</p>
+            <p>More international: JA1XYZ from Japan, VK2DEF from Australia, ZL1ABC from New Zealand.</p>
+            <p>With portable indicators: W1ABC/3 mobile, SM8AYA/5 vacation, K2ABC/0 portable.</p>
+            <p>Special prefixes: 9V1ABC Singapore, 3D2XYZ Fiji, 5N1ABC Nigeria.</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>❌ Invalid Call Signs (Should NOT be marked up)</h2>
+        <div class="invalid-calls">
+            <p>Unregistered single-letter prefixes: Q1ABC not valid, X2XYZ also invalid.</p>
+            <p>Unregistered two-letter prefixes: BB1ABC is fake, KK2XYZ not real, QQ3ABC invalid.</p>
+            <p>Look-alike patterns: ZZ1ABC looks valid, XX1XYZ also looks real, YZ2ABC appears ok.</p>
+            <p>Note: These patterns match the regex format but have unregistered prefixes.</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔀 Mixed Valid and Invalid Call Signs</h2>
+        <p>In this log entry, only valid call signs should be highlighted:</p>
+        <p>QSO log: W1AW worked BB1ABC and SM8AYA but not QQ2XYZ today. Also heard K2ABC and XX1ABC on 20m.</p>
+        <p><strong>Expected result:</strong> W1AW SM8AYA and K2ABC should be highlighted. BB1ABC QQ2XYZ and XX1ABC should remain plain text.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 Real-World Amateur Radio Log</h2>
+        <p>2024-01-15 1400z Worked W1AW on 14.250 MHz SSB. Signal 59. Then QSO with SM8AYA on 7.100 MHz CW at 1430z.</p>
+        <p>1500z Heard fake station BB1ABC calling CQ but no response. Real station DL1ABC answered my CQ at 1515z.</p>
+        <p>1600z Mobile operation as W1ABC/3 from grid FN20. Worked G0XYZ and JA1XYZ. Also heard ZZ9ZZZ which seemed suspicious.</p>
+        <p>Contest summary: Valid QSOs with K2ABC N3XYZ VK2DEF and 9V1ABC. Invalid calls heard: QQ1QQQ XX2XXX KK3KKK.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Edge Cases</h2>
+        <p>Minimum length valid: W1A K2B N3C are all valid short calls.</p>
+        <p>Minimum length invalid: Q1A X2B Z9C should not be highlighted (invalid prefixes).</p>
+        <p>Maximum length: ABC1XYZ could match but depends on prefix validity.</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 Manual Tags (Should always work regardless of prefix validation)</h2>
+        <p>These use explicit <code>&lt;call-sign&gt;</code> tags and should always be rendered:</p>
+        <p>Valid with tags: <call-sign>W1AW</call-sign> <call-sign>SM8AYA</call-sign> <call-sign>DL1ABC</call-sign></p>
+        <p>Invalid with tags (will render but without flag): <call-sign>BB1ABC</call-sign> <call-sign>QQ2XYZ</call-sign></p>
+        <p><em>Note: Manual tags bypass the search function, but the constructor still validates for flag display.</em></p>
+    </div>
+
+    <script>
+        // Wait for page to load and custom elements to be defined
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log('=== Call Sign Markup Test Results ===');
+                const callSigns = document.querySelectorAll('call-sign');
+                console.log(`Total call signs marked up: ${callSigns.length}`);
+                
+                callSigns.forEach((el, index) => {
+                    console.log(`${index + 1}. ${el.textContent}`);
+                });
+                
+                console.log('\n=== Expected Valid Call Signs (should be marked up) ===');
+                const expectedValid = ['W1AW', 'K2ABC', 'N3XYZ', 'AA1AA', 'AB2CD', 'SM8AYA', 'DL1ABC', 'G0XYZ', 'JA1XYZ', 'VK2DEF', 'ZL1ABC', 'W1ABC/3', 'SM8AYA/5', 'K2ABC/0', '9V1ABC', '3D2XYZ', '5N1ABC', 'W1A', 'K2B', 'N3C'];
+                console.log(expectedValid.join(', '));
+                
+                console.log('\n=== Expected Invalid Call Signs (should NOT be marked up) ===');
+                const expectedInvalid = ['Q1ABC', 'X2XYZ', 'BB1ABC', 'KK2XYZ', 'QQ3ABC', 'ZZ1ABC', 'XX1XYZ', 'YZ2ABC', 'QQ2XYZ', 'XX1ABC', 'ZZ9ZZZ', 'QQ1QQQ', 'XX2XXX', 'KK3KKK', 'Q1A', 'X2B', 'Z9C'];
+                console.log(expectedInvalid.join(', '));
+            }, 500);
+        });
+    </script>
+</body>
+</html>

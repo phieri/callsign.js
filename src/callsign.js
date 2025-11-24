@@ -373,6 +373,20 @@ class Callsign extends HTMLElement {
   }
 
   /**
+   * Validates if a prefix is registered in the PREFIX_TABLE
+   * @param {string} prefix - The call sign prefix to validate
+   * @returns {boolean}
+   */
+  static isValidPrefix(prefix) {
+    for (const prefixes of PREFIX_TABLE.values()) {
+      if (prefixes.includes(prefix)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Goes through the entire webpage and adds markup to untagged call signs.
    * Uses TreeWalker to safely traverse text nodes without modifying innerHTML.
    */
@@ -416,11 +430,16 @@ class Callsign extends HTMLElement {
       const regex = new RegExp(SEARCH_REGEX, 'g');
 
       while ((match = regex.exec(`${text} `)) !== null) {
-        matches.push({
-          callsign: match[1],
-          index: match.index,
-          length: match[1].length
-        });
+        const callsign = match[1];
+        // Parse the call sign to extract the prefix
+        const parts = callsign.match(PARTS_REGEX);
+        if (parts && Callsign.isValidPrefix(parts[1])) {
+          matches.push({
+            callsign,
+            index: match.index,
+            length: callsign.length
+          });
+        }
       }
 
       if (matches.length > 0) {

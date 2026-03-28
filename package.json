@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint src/"
   },
   "devDependencies": {

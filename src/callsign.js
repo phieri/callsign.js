@@ -210,10 +210,10 @@ const PREFIX_TABLE = new Map([
 ]);
 
 /** @constant */
-const SEARCH_REGEX = /([A-Z,\d]{1,3}\d[A-Z]{1,3}(?:\/\d)?)\s/;
+const SEARCH_REGEX = /([A-Z\d]{1,3}\d[A-Z]{1,3}(?:\/\d)?)\b/;
 
 /** @constant */
-const PARTS_REGEX = /([A-Z,\d]{1,3})(\d)([A-Z]{1,3})(?:\/(\d))?/;
+const PARTS_REGEX = /([A-Z\d]{1,3})(\d)([A-Z]{1,3})(?:\/(\d))?/;
 
 /** @constant */
 const DEFAULT_CSS_PATH = 'callsign.css';
@@ -233,6 +233,15 @@ function getScriptElement() {
   return scriptElement;
 }
 
+/** @constant */
+const DEFAULT_CONFIG = {
+  flag: true,
+  monospace: true,
+  phonetic: true,
+  search: false,
+  cssPath: DEFAULT_CSS_PATH
+};
+
 /**
  * Gets configuration from script element dataset
  * @returns {Object}
@@ -241,21 +250,15 @@ function getConfig() {
   if (!config) {
     const script = getScriptElement();
     if (!script) {
-      console.warn('callsign.js: Script element with id="callsign-js" not found');
-      return {
-        flag: 'true',
-        monospace: 'true',
-        phonetic: 'true',
-        search: 'false',
-        cssPath: DEFAULT_CSS_PATH
-      };
+      return { ...DEFAULT_CONFIG };
     }
+    const ds = script.dataset;
     config = {
-      flag: script.dataset.flag || 'true',
-      monospace: script.dataset.monospace || 'true',
-      phonetic: script.dataset.phonetic || 'true',
-      search: script.dataset.search || 'false',
-      cssPath: script.dataset.cssPath || DEFAULT_CSS_PATH
+      flag: ds.flag !== 'false',
+      monospace: ds.monospace !== 'false',
+      phonetic: ds.phonetic !== 'false',
+      search: ds.search === 'true',
+      cssPath: ds.cssPath || DEFAULT_CSS_PATH
     };
   }
   return config;
@@ -270,12 +273,11 @@ class Callsign extends HTMLElement {
     super();
 
     const configuration = getConfig();
-    const callsignText = this.innerHTML.trim();
+    const callsignText = (this.textContent || '').trim();
     
     // Validate call sign format
     const match = callsignText.match(PARTS_REGEX);
     if (!match) {
-      console.warn(`callsign.js: Invalid call sign format: ${callsignText}`);
       return;
     }
 
@@ -285,7 +287,7 @@ class Callsign extends HTMLElement {
 
     const wrapper = document.createElement('span');
     wrapper.classList.add('cs-wrapper');
-    if (configuration.monospace !== 'false') {
+    if (configuration.monospace) {
       wrapper.classList.add('monospace');
     }
 
@@ -296,14 +298,14 @@ class Callsign extends HTMLElement {
     ]);
 
     // Add phonetic information
-    if (configuration.phonetic !== 'false') {
+    if (configuration.phonetic) {
       const phonetic = Callsign.getPhonetics(match[0]);
       wrapper.setAttribute('aria-label', phonetic);
       wrapper.setAttribute('title', phonetic);
     }
 
     // Add country flag
-    if (configuration.flag !== 'false') {
+    if (configuration.flag) {
       const flagElement = this.createFlagElement(parts.get('prefix'));
       if (flagElement) {
         wrapper.appendChild(flagElement);
@@ -315,7 +317,7 @@ class Callsign extends HTMLElement {
       const partElement = document.createElement('span');
       partElement.textContent = value;
       partElement.className = `cs-${key}`;
-      if (configuration.phonetic !== 'false') {
+      if (configuration.phonetic) {
         partElement.setAttribute('aria-hidden', 'true');
       }
       wrapper.appendChild(partElement);
@@ -336,14 +338,13 @@ class Callsign extends HTMLElement {
    * @returns {HTMLSpanElement|null}
    */
   createFlagElement(prefix) {
-    for (const [iso, prefixes] of PREFIX_TABLE) {
-      if (prefixes.includes(prefix)) {
-        const flagElement = document.createElement('span');
-        flagElement.className = 'cs-flag';
-        flagElement.title = iso;
-        flagElement.textContent = Callsign.getFlag(iso);
-        return flagElement;
-      }
+    const iso = Callsign._reversePrefixMap.get(prefix);
+    if (iso) {
+      const flagElement = document.createElement('span');
+      flagElement.className = 'cs-flag';
+      flagElement.title = iso;
+      flagElement.textContent = Callsign.getFlag(iso);
+      return flagElement;
     }
     return null;
   }
@@ -362,14 +363,10 @@ class Callsign extends HTMLElement {
    * @returns {string}
    */
   static getPhonetics(letters) {
-    let ret = '';
-    for (let i = 0; i < letters.length; i++) {
-      const phonetic = PHONETIC_TABLE.get(letters.charAt(i));
-      if (phonetic) {
-        ret += `${phonetic} `;
-      }
-    }
-    return ret.slice(0, -1);
+    return Array.from(letters)
+      .map(c => PHONETIC_TABLE.get(c))
+      .filter(Boolean)
+      .join(' ');
   }
 
   /**
@@ -378,12 +375,7 @@ class Callsign extends HTMLElement {
    * @returns {boolean}
    */
   static isValidPrefix(prefix) {
-    for (const prefixes of PREFIX_TABLE.values()) {
-      if (prefixes.includes(prefix)) {
-        return true;
-      }
-    }
-    return false;
+    return Callsign._reversePrefixMap.has(prefix);
   }
 
   /**
@@ -427,9 +419,9 @@ class Callsign extends HTMLElement {
       const matches = [];
       let match;
       let lastIndex = 0;
-      const regex = new RegExp(SEARCH_REGEX, 'g');
+      const regex = new RegExp(SEARCH_REGEX.source, 'g');
 
-      while ((match = regex.exec(`${text} `)) !== null) {
+      while ((match = regex.exec(text)) !== null) {
         const callsign = match[1];
         // Parse the call sign to extract the prefix
         const parts = callsign.match(PARTS_REGEX);
@@ -474,8 +466,16 @@ class Callsign extends HTMLElement {
   }
 }
 
+// Build reverse prefix→ISO map for O(1) lookups
+Callsign._reversePrefixMap = new Map();
+for (const [iso, prefixes] of PREFIX_TABLE) {
+  for (const prefix of prefixes) {
+    Callsign._reversePrefixMap.set(prefix, iso);
+  }
+}
+
 // Initialize when DOM is ready
-if (getConfig().search !== 'false') {
+if (getConfig().search) {
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => Callsign.searchCallsigns());
   } else {
@@ -483,4 +483,8 @@ if (getConfig().search !== 'false') {
   }
 }
 
-customElements.define('call-sign', Callsign);
+if (!customElements.get('call-sign')) {
+  customElements.define('call-sign', Callsign);
+}
+
+if (typeof window !== 'undefined') window.Callsign = Callsign;

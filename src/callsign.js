@@ -389,11 +389,13 @@ class Callsign extends HTMLElement {
       NodeFilter.SHOW_TEXT,
       {
         acceptNode(node) {
-          // Skip script and style elements
+          // Skip script, style, code and pre elements
           const parent = node.parentElement;
           if (!parent || parent.tagName === 'SCRIPT' || 
               parent.tagName === 'STYLE' || 
-              parent.tagName === 'CALL-SIGN') {
+              parent.tagName === 'CALL-SIGN' ||
+              parent.tagName === 'CODE' ||
+              parent.tagName === 'PRE') {
             return NodeFilter.FILTER_REJECT;
           }
           // Only accept nodes with potential call signs

@@ -218,20 +218,8 @@ const PARTS_REGEX = /([A-Z\d]{1,3})(\d)([A-Z]{1,3})(?:\/(\d))?/;
 /** @constant */
 const DEFAULT_CSS_PATH = 'callsign.css';
 
-// Cache script element and configuration
-let scriptElement = null;
-let config = null;
-
-/**
- * Gets the script element and caches it
- * @returns {HTMLScriptElement|null}
- */
-function getScriptElement() {
-  if (!scriptElement) {
-    scriptElement = document.getElementById('callsign-js');
-  }
-  return scriptElement;
-}
+/** @constant */
+const SKIPPED_TEXT_NODE_TAGS = new Set(['SCRIPT', 'STYLE', 'CALL-SIGN', 'CODE', 'PRE']);
 
 /** @constant */
 const DEFAULT_CONFIG = {
@@ -242,30 +230,136 @@ const DEFAULT_CONFIG = {
   cssPath: DEFAULT_CSS_PATH
 };
 
+// Cache script element and configuration
+let scriptElement = null;
+let config = null;
+
 /**
- * Gets configuration from script element dataset
+ * Gets the script element and caches it.
+ * @returns {HTMLScriptElement|null}
+ */
+function getScriptElement() {
+  if (!scriptElement) {
+    scriptElement = document.getElementById('callsign-js');
+  }
+  return scriptElement;
+}
+
+/**
+ * Reads a boolean dataset attribute, defaulting to the provided fallback.
+ * @param {DOMStringMap} dataset The dataset to read from.
+ * @param {string} key The dataset key to read.
+ * @param {boolean} fallback The default value.
+ * @returns {boolean}
+ */
+function getBooleanConfigValue(dataset, key, fallback) {
+  const value = dataset[key];
+  if (typeof value !== 'string') {
+    return fallback;
+  }
+  return value === 'true';
+}
+
+/**
+ * Normalizes a CSS path so only safe values are used.
+ * @param {string|undefined} value The configured stylesheet path.
+ * @returns {string}
+ */
+function sanitizeCssPath(value) {
+  if (typeof value !== 'string') {
+    return DEFAULT_CSS_PATH;
+  }
+
+  const trimmedValue = value.trim();
+  if (!trimmedValue) {
+    return DEFAULT_CSS_PATH;
+  }
+
+  if (/^(?:javascript|data|vbscript|file|blob):/i.test(trimmedValue)) {
+    return DEFAULT_CSS_PATH;
+  }
+
+  if (/^(?:[a-z][a-z\d+.-]*:)?\/\//i.test(trimmedValue)) {
+    if (typeof window === 'undefined' || !window.location) {
+      return DEFAULT_CSS_PATH;
+    }
+
+    try {
+      const cssUrl = new URL(trimmedValue, window.location.href);
+      if (cssUrl.origin !== window.location.origin) {
+        return DEFAULT_CSS_PATH;
+      }
+    } catch {
+      return DEFAULT_CSS_PATH;
+    }
+  }
+
+  return trimmedValue;
+}
+
+/**
+ * Parses a call sign into its structural parts.
+ * @param {string} text The text to parse.
+ * @returns {{raw: string, prefix: string, digit: string, suffix: string}|null}
+ */
+function parseCallsign(text) {
+  const trimmedText = (text || '').trim();
+  if (!trimmedText) {
+    return null;
+  }
+
+  const match = trimmedText.match(PARTS_REGEX);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    raw: match[0],
+    prefix: match[1],
+    digit: match[2],
+    suffix: match[3]
+  };
+}
+
+/**
+ * Determines whether a text node should be skipped during auto-detection.
+ * @param {Text} node The text node to inspect.
+ * @returns {boolean}
+ */
+function shouldSkipTextNode(node) {
+  const parent = node.parentElement;
+  if (!parent) {
+    return true;
+  }
+  return SKIPPED_TEXT_NODE_TAGS.has(parent.tagName);
+}
+
+/**
+ * Gets configuration from script element dataset.
  * @returns {Object}
  */
 function getConfig() {
   if (!config) {
     const script = getScriptElement();
     if (!script) {
-      return { ...DEFAULT_CONFIG };
+      config = { ...DEFAULT_CONFIG };
+      return config;
     }
+
     const ds = script.dataset;
     config = {
-      flag: ds.flag !== 'false',
-      monospace: ds.monospace !== 'false',
-      phonetic: ds.phonetic !== 'false',
+      flag: getBooleanConfigValue(ds, 'flag', DEFAULT_CONFIG.flag),
+      monospace: getBooleanConfigValue(ds, 'monospace', DEFAULT_CONFIG.monospace),
+      phonetic: getBooleanConfigValue(ds, 'phonetic', DEFAULT_CONFIG.phonetic),
       search: ds.search === 'true',
-      cssPath: ds.cssPath || DEFAULT_CSS_PATH
+      cssPath: sanitizeCssPath(ds.cssPath || DEFAULT_CONFIG.cssPath)
     };
   }
   return config;
 }
 
 /**
- * Custom element for rendering radio call signs with country flags and phonetic information
+ * Custom element for rendering radio call signs with country flags and phonetic information.
  * @extends HTMLElement
  */
 class Callsign extends HTMLElement {
@@ -273,11 +367,8 @@ class Callsign extends HTMLElement {
     super();
 
     const configuration = getConfig();
-    const callsignText = (this.textContent || '').trim();
-    
-    // Validate call sign format
-    const match = callsignText.match(PARTS_REGEX);
-    if (!match) {
+    const parsedCallsign = parseCallsign(this.textContent || '');
+    if (!parsedCallsign) {
       return;
     }
 
@@ -291,22 +382,22 @@ class Callsign extends HTMLElement {
       wrapper.classList.add('monospace');
     }
 
-    const parts = new Map([
-      ['prefix', match[1]],
-      ['digit', match[2]],
-      ['suffix', match[3]],
-    ]);
+    const parts = [
+      ['prefix', parsedCallsign.prefix],
+      ['digit', parsedCallsign.digit],
+      ['suffix', parsedCallsign.suffix]
+    ];
 
     // Add phonetic information
     if (configuration.phonetic) {
-      const phonetic = Callsign.getPhonetics(match[0]);
+      const phonetic = Callsign.getPhonetics(parsedCallsign.raw);
       wrapper.setAttribute('aria-label', phonetic);
       wrapper.setAttribute('title', phonetic);
     }
 
     // Add country flag
     if (configuration.flag) {
-      const flagElement = this.createFlagElement(parts.get('prefix'));
+      const flagElement = this.createFlagElement(parsedCallsign.prefix);
       if (flagElement) {
         wrapper.appendChild(flagElement);
       }
@@ -333,8 +424,8 @@ class Callsign extends HTMLElement {
   }
 
   /**
-   * Creates a flag element for the given prefix
-   * @param {string} prefix - The call sign prefix
+   * Creates a flag element for the given prefix.
+   * @param {string} prefix - The call sign prefix.
    * @returns {HTMLSpanElement|null}
    */
   createFlagElement(prefix) {
@@ -351,27 +442,27 @@ class Callsign extends HTMLElement {
 
   /**
    * Converts an ISO country code to a Unicode Regional Indicator Symbol (emoji flag).
-   * @param {!string} code The ISO 3166-1 alpha-2 code
+   * @param {!string} code The ISO 3166-1 alpha-2 code.
    * @returns {string}
    */
   static getFlag(code) {
-    return String.fromCodePoint(...[...code].map(c => c.charCodeAt() + 127397));
+    return String.fromCodePoint(...[...code].map((letter) => letter.charCodeAt() + 127397));
   }
 
   /**
-   * @param {string} letters The string of letters to expand
+   * @param {string} letters The string of letters to expand.
    * @returns {string}
    */
   static getPhonetics(letters) {
     return Array.from(letters)
-      .map(c => PHONETIC_TABLE.get(c))
+      .map((letter) => PHONETIC_TABLE.get(letter))
       .filter(Boolean)
       .join(' ');
   }
 
   /**
-   * Validates if a prefix is registered in the PREFIX_TABLE
-   * @param {string} prefix - The call sign prefix to validate
+   * Validates if a prefix is registered in the PREFIX_TABLE.
+   * @param {string} prefix - The call sign prefix to validate.
    * @returns {boolean}
    */
   static isValidPrefix(prefix) {
@@ -383,26 +474,18 @@ class Callsign extends HTMLElement {
    * Uses TreeWalker to safely traverse text nodes without modifying innerHTML.
    */
   static searchCallsigns() {
-    // Create a TreeWalker to find all text nodes
     const walker = document.createTreeWalker(
       document.body,
       NodeFilter.SHOW_TEXT,
       {
         acceptNode(node) {
-          // Skip script, style, code and pre elements
-          const parent = node.parentElement;
-          if (!parent || parent.tagName === 'SCRIPT' || 
-              parent.tagName === 'STYLE' || 
-              parent.tagName === 'CALL-SIGN' ||
-              parent.tagName === 'CODE' ||
-              parent.tagName === 'PRE') {
+          if (shouldSkipTextNode(node)) {
             return NodeFilter.FILTER_REJECT;
           }
-          // Only accept nodes with potential call signs
-          if (SEARCH_REGEX.test(node.textContent)) {
-            return NodeFilter.FILTER_ACCEPT;
-          }
-          return NodeFilter.FILTER_REJECT;
+
+          return SEARCH_REGEX.test(node.textContent || '')
+            ? NodeFilter.FILTER_ACCEPT
+            : NodeFilter.FILTER_REJECT;
         }
       }
     );
@@ -417,17 +500,15 @@ class Callsign extends HTMLElement {
 
     // Process each text node
     for (const node of nodesToReplace) {
-      const text = node.textContent;
+      const text = node.textContent || '';
       const matches = [];
       let match;
-      let lastIndex = 0;
       const regex = new RegExp(SEARCH_REGEX.source, 'g');
 
       while ((match = regex.exec(text)) !== null) {
         const callsign = match[1];
-        // Parse the call sign to extract the prefix
-        const parts = callsign.match(PARTS_REGEX);
-        if (parts && Callsign.isValidPrefix(parts[1])) {
+        const parsedCallsign = parseCallsign(callsign);
+        if (parsedCallsign && Callsign.isValidPrefix(parsedCallsign.prefix)) {
           matches.push({
             callsign,
             index: match.index,
@@ -436,34 +517,36 @@ class Callsign extends HTMLElement {
         }
       }
 
-      if (matches.length > 0) {
-        const parent = node.parentNode;
-        const fragment = document.createDocumentFragment();
-        lastIndex = 0;
-
-        for (const matchInfo of matches) {
-          // Add text before the call sign
-          if (matchInfo.index > lastIndex) {
-            fragment.appendChild(
-              document.createTextNode(text.substring(lastIndex, matchInfo.index))
-            );
-          }
-
-          // Create call-sign element
-          const callsignElement = document.createElement('call-sign');
-          callsignElement.textContent = matchInfo.callsign;
-          fragment.appendChild(callsignElement);
-
-          lastIndex = matchInfo.index + matchInfo.length;
-        }
-
-        // Add remaining text
-        if (lastIndex < text.length) {
-          fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
-        }
-
-        parent.replaceChild(fragment, node);
+      if (matches.length === 0) {
+        continue;
       }
+
+      const parent = node.parentNode;
+      const fragment = document.createDocumentFragment();
+      let lastIndex = 0;
+
+      for (const matchInfo of matches) {
+        // Add text before the call sign
+        if (matchInfo.index > lastIndex) {
+          fragment.appendChild(
+            document.createTextNode(text.substring(lastIndex, matchInfo.index))
+          );
+        }
+
+        // Create call-sign element
+        const callsignElement = document.createElement('call-sign');
+        callsignElement.textContent = matchInfo.callsign;
+        fragment.appendChild(callsignElement);
+
+        lastIndex = matchInfo.index + matchInfo.length;
+      }
+
+      // Add remaining text
+      if (lastIndex < text.length) {
+        fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+      }
+
+      parent.replaceChild(fragment, node);
     }
   }
 }
@@ -476,17 +559,25 @@ for (const [iso, prefixes] of PREFIX_TABLE) {
   }
 }
 
-// Initialize when DOM is ready
-if (getConfig().search) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => Callsign.searchCallsigns());
-  } else {
+/**
+ * Initializes the library once the DOM is ready.
+ */
+function initialize() {
+  if (!customElements.get('call-sign')) {
+    customElements.define('call-sign', Callsign);
+  }
+
+  if (getConfig().search) {
     Callsign.searchCallsigns();
   }
 }
 
-if (!customElements.get('call-sign')) {
-  customElements.define('call-sign', Callsign);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initialize);
+} else {
+  initialize();
 }
 
-if (typeof window !== 'undefined') window.Callsign = Callsign;
+if (typeof window !== 'undefined') {
+  window.Callsign = Callsign;
+}

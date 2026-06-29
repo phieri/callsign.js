@@ -5,7 +5,8 @@ This JavaScript library gives website users more ways to interact with written [
 See a live example at [https://phieri.github.io/callsign.js/](https://phieri.github.io/callsign.js/)
 
 # Usage
-Upload callsign.js and callsign.css to the webserver and add callsign.js to the `<head>` section.
+Upload `callsign.js` and `callsign.css` to your web server and include the script on the page. The library creates a shadow root for each rendered call sign and injects the stylesheet automatically unless you override it with `data-css-path`.
+
 ```html
 <script id="callsign-js" src="callsign.js" defer></script>
 ```
@@ -20,16 +21,16 @@ Options can be set as attributes in the `<script>` tag.
 
 | Name             | Default | Description |
 | ---------------- | ------- | ----------- |
-| `data-flag`      | `true`  | Show country flag before the call signs. |
-| `data-monospace` | `true`  | Render call sign with a monospace font. |
-| `data-phonetic`  | `true`  | Add phonetic information for screen readers. |
+| `data-flag`      | `true`  | Show a country flag before the call sign. |
+| `data-monospace` | `true`  | Render the call sign with a monospace font. |
+| `data-phonetic`  | `true`  | Add phonetic information for screen readers and tooltips. |
 | `data-search`    | `false` | Find and mark up untagged call signs in the document. |
-| `data-css-path`  | `callsign.css` | Custom path to the CSS stylesheet. |
+| `data-css-path`  | `callsign.css` | Path to the stylesheet that the library injects into each shadow root. |
 
 ## Customization
-You can customize the appearance by overriding CSS custom properties in your stylesheet:
+You can customize the appearance by overriding the CSS custom properties on the `<call-sign>` host element. These values flow into the shadow DOM that wraps each rendered call sign:
 ```css
-call-sign::part(wrapper) {
+call-sign {
   --cs-border-color: #007acc;
   --cs-background-color: #e0f0ff;
   --cs-border-radius: 5px;
@@ -37,7 +38,7 @@ call-sign::part(wrapper) {
 ```
 
 # Testing
-This project includes comprehensive unit tests using Jest with a primary focus on regex pattern validation.
+The project uses Jest for unit tests, ESLint for code quality checks, and manual browser validation for the rendered shadow-DOM output.
 
 ## Running Tests
 ```bash
@@ -51,32 +52,14 @@ npm test
 npm run lint
 ```
 
-## Test Coverage (71 tests total)
-The test suite focuses primarily on validating the two core regex patterns that drive the library's functionality:
+## Test Coverage
+The current suite covers the library's core behavior in browser-like conditions:
+- call sign parsing and validation
+- country prefix lookups and flag generation
+- phonetic expansion
+- auto-detection of untagged call signs in text content
 
-### 1. **SEARCH_REGEX Pattern Tests** (`tests/searchCallsigns.test.js`)
-Tests the regex pattern `/([A-Z,\d]{1,3}\d[A-Z]{1,3}(?:\/\d)?)\s/` that detects call signs in text:
-- Valid call sign pattern matching (single/double/triple letter prefixes)
-- Portable indicator detection (`/3`, `/5`, etc.)
-- Edge cases and boundary conditions
-- Invalid pattern rejection (no trailing space, wrong format, etc.)
-- Real-world call sign examples from multiple countries
-- Whitespace handling and greedy matching behavior
-
-### 2. **PARTS_REGEX Pattern Tests** (`tests/partsRegex.test.js`)
-Tests the regex pattern `/([A-Z,\d]{1,3})(\d)([A-Z]{1,3})(?:\/(\d))?/` that parses call signs into components:
-- Prefix parsing (1-3 characters: W, SM, VK2, etc.)
-- Area digit extraction (0-9)
-- Suffix parsing (1-3 letters: A, AB, ABC)
-- Portable indicator capture group
-- Greedy matching behavior with long prefixes
-- Component extraction from embedded text
-
-### 3. **Supporting Method Tests**
-- `tests/getFlag.test.js` - ISO code to Unicode flag conversion (used after PREFIX_TABLE matching)
-- `tests/getPhonetics.test.js` - Phonetic alphabet mapping for regex-parsed call signs
-
-Test files are located in the `tests/` directory with clear documentation of each regex pattern's behavior and edge cases.
+The test files are located in the `tests/` directory.
 
 # Minification
 The files are intentionally not provided [minified](https://en.wikipedia.org/wiki/Minification_(programming)).

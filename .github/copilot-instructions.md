@@ -1,111 +1,89 @@
-# callsign.js - ITU Radio Call Sign JavaScript Library
+# callsign.js - Copilot Instructions
 
-Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
+Always use these instructions before searching for ad hoc solutions. The repository is small and the project conventions are explicit; when information conflicts with the repo itself, prefer the files in the repo (`README.md`, `package.json`, `tests/`, and CI workflow files) over assumptions.
 
 ## Repository Overview
-callsign.js is a JavaScript library that highlights ITU radio call signs (including amateur radio) in web pages. The library provides interactive features like country flags, phonetic spelling, and automatic call sign detection. It's intentionally not minified to support the amateur radio community's learning and experimentation goals.
+callsign.js is a browser-side JavaScript library that highlights ITU radio call signs, including amateur radio call signs, in web pages. It wraps each rendered call sign in a custom element (`<call-sign>`), adds optional country flags and phonetic information, and can also discover untagged call signs in text when `data-search="true"` is enabled.
 
-## Working Effectively
+The repo is intentionally source-first and not minified. There is no build step or bundler workflow; source files are used directly in the browser.
 
-### Bootstrap and Dependencies
-- Install dependencies: `npm install` -- takes ~6 seconds on subsequent runs (~0.6 seconds), ~6 seconds on first install
-- No build process required - the library is used directly from source files
-- Dependencies: Only ESLint for code quality checking
+## File Layout
+- `src/callsign.js` — main library logic
+- `src/callsign.css` — default styling for rendered call signs
+- `tests/` — real Jest test suite for parsing, validation, prefixes, and search behavior
+- `test-validation.html` — browser validation page for manually checking render output
+- `README.md` — user-facing docs and usage examples
+- `.github/workflows/ci.yml` — authoritative CI validation commands for the repo
+- `eslint.config.js` — flat ESLint configuration
+- `package.json` — scripts and dependency versions
 
-### Linting and Code Quality
-- Run linting: `npx eslint src/` -- takes ~0.6 seconds. NEVER CANCEL.
-- ALWAYS run linting before committing changes or CI will fail
-- ESLint configuration is in `eslint.config.js` using flat config format
-- Linting rules include indent, complexity, and regex validation checks
+## Working Efficiently
 
-### Testing and Validation
-- No automated test suite exists - validation is manual
-- ALWAYS test library functionality by creating an HTML page that includes:
-  - `<script id="callsign-js" src="src/callsign.js" defer></script>`
-  - `<link rel="stylesheet" href="src/callsign.css">`
-  - Sample call signs wrapped in `<call-sign>` tags
-- Test functionality by serving files via HTTP server (file:// protocol doesn't work)
-- Start test server: `python3 -m http.server 8081` from repository root
-- ALWAYS verify these features work after changes:
-  - Call signs display with country flags
-  - Phonetic information in aria-labels and tooltips
-  - Monospace font rendering
-  - Automatic call sign detection (when data-search="true")
+### Install and validation commands
+Run these commands from the repository root:
+- `npm install`
+- `npm run lint`
+- `npm test`
 
-### Manual Validation Requirements
-When making changes to the library, ALWAYS perform these validation steps:
-1. Create a test HTML page with various call signs (US: W1AW, Swedish: SM8AYA, German: DL1ABC, etc.)
-2. Start HTTP server and load the page
-3. Verify call signs are highlighted with proper styling
-4. Check that country flags appear correctly
-5. Verify phonetic information is accessible (hover tooltips, screen reader content)
-6. Test with different data-* attribute configurations
+These are the commands the repository uses in CI. The repo does not have a separate build step.
 
-## Repository Structure
+### CI status and real expectations
+The project is validated with GitHub Actions in `.github/workflows/ci.yml`:
+- Node.js 24 is used in CI
+- `npm install` runs first
+- `npm run lint` runs second
+- `npm test` runs third
 
-### Source Files
-- `src/callsign.js` - Main JavaScript library (6,228 characters)
-- `src/callsign.css` - Styling for call sign highlighting (1,035 characters)
+Do not assume the repository has no automated tests. The `tests/` directory contains real Jest coverage and is the source of truth.
 
-### Configuration Files
-- `package.json` - Minimal dependencies (only ESLint)
-- `eslint.config.js` - ESLint flat configuration
-- `.editorconfig` - Editor configuration
-- `.gitignore` - Excludes minified files, node_modules, package-lock.json
+## Development Workflow
+1. Edit `src/callsign.js` or `src/callsign.css` directly.
+2. Run `npm run lint` to catch syntax and code-quality regressions.
+3. Run `npm test` to verify the library logic still passes the existing Jest suite.
+4. For browser-specific rendering checks, use the included `test-validation.html` page.
+5. Serve the repo over HTTP rather than using a `file://` URL.
 
-### Documentation
-- `README.md` - Usage instructions and options
-- `LICENSE` - MIT license
+## Browser Validation Requirements
+When a change affects rendering, flag appearance, phonetics, or search behavior, validate in a browser using a local HTTP server.
 
-## Key Features and Options
-The library supports these data-* attributes on the script tag:
-- `data-flag="true"` (default) - Show country flags
-- `data-monospace="true"` (default) - Use monospace font
-- `data-phonetic="true"` (default) - Add phonetic information
-- `data-search="false"` (default) - Auto-detect untagged call signs
+Use:
+- `python3 -m http.server 8081`
+- then open `http://localhost:8081/test-validation.html`
 
-## CI/CD Pipeline
-- GitHub Actions workflow: `.github/workflows/test.yml`
-- Runs on: Ubuntu latest with Node.js 20
-- Only validates: `npm install` and `npx eslint src/`
-- NO other build or test steps exist
+Check that:
+- `<call-sign>` elements render with the expected styling
+- country flags appear for valid prefixes
+- phonetic content is available in `aria-label` / tooltip output
+- monospace styling is applied
+- `data-search="true"` finds valid untagged call signs without false positives
 
-## Common Tasks
+## Known Issues and Workarounds
+### 1. `file://` validation fails
+Problem: loading the page by opening the HTML directly from disk does not behave reliably for this library's browser-side script and custom-element setup.
 
-### Development Workflow
-1. Make changes to `src/callsign.js` or `src/callsign.css`
-2. Run `npx eslint src/` to validate code quality
-3. Create test HTML page to validate functionality
-4. Start HTTP server: `python3 -m http.server 8081`
-5. Open browser to `http://localhost:8081/test.html`
-6. Verify all features work correctly
+Workaround: always serve the repo with `python3 -m http.server 8081` and validate via `http://localhost:8081/...` instead.
 
-### Adding New Country Prefixes
-- Edit the `PREFIX_TABLE` Map in `src/callsign.js`
-- Add ISO country code and array of radio prefixes
-- Always run linting after changes
-- Test with sample call signs using new prefixes
+### 2. Stale assumptions about testing
+Problem: it is easy to incorrectly assume there is no automated test suite or that only linting matters. This repo does have Jest tests and a CI workflow that runs them.
 
-### Modifying Styling
-- Edit `src/callsign.css`
-- Test changes with various call sign examples
-- Ensure accessibility is maintained (contrast, screen readers)
+Workaround: treat `.github/workflows/ci.yml`, `package.json`, and `tests/` as authoritative. Use `npm test` as part of the standard verification flow rather than relying only on a manual browser-only check.
 
-## Important Notes
-- Library is intentionally NOT minified (amateur radio learning philosophy)
-- No complex build process - files are used directly
-- Uses ES6 modules and modern JavaScript features
-- Relies on Custom Elements API for `<call-sign>` tags
-- Designed for browser environments, not Node.js
+### 3. Avoid build-time assumptions
+Problem: the repo is source-based and intentionally unminified, so there is no package build or generated output to regenerate.
+
+Workaround: make the change directly in `src/` and validate through the existing lint/test workflow, not by creating a build pipeline.
 
 ## Common Pitfalls
-- Don't try to build the project - there's no build process
-- Don't test with file:// URLs - use HTTP server
-- Always run ESLint before committing
-- Remember this is a browser library, not a Node.js module
-- Test with various call sign formats and country prefixes
+- Do not add a bundling/build step unless the task explicitly requires it.
+- Do not use `file://` URLs for browser validation.
+- Do not treat README examples as the only source of truth when CI and package scripts are available.
+- Keep the library intentionally unminified and readable.
+- Respect the custom-element design and data attributes (`data-flag`, `data-monospace`, `data-phonetic`, `data-search`, `data-css-path`).
 
-## Timing Expectations
-- `npm install`: ~6 seconds first time, ~0.6 seconds subsequent
-- `npx eslint src/`: ~0.6 seconds. NEVER CANCEL.
-- No other time-consuming operations exist in this project
+## Expected Validation Before Completion
+For any change in the library logic or styling, the safe completion checklist is:
+- `npm run lint` passes
+- `npm test` passes
+- manual browser validation passes on `http://localhost:8081/test-validation.html`
+
+This repo is small enough that the fastest reliable path is to validate with the existing project commands instead of inventing custom tooling.

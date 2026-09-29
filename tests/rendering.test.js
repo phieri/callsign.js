@@ -28,6 +28,13 @@ describe('custom element rendering', () => {
     expect(element.shadowRoot.querySelector('.cs-suffix').textContent).toBe(`AW/${portable}`);
   });
 
+  test('announces portable suffix separators in the phonetic label and tooltip', () => {
+    const element = insert('W1AW/P');
+    const wrapper = element.shadowRoot.querySelector('.cs-wrapper');
+    expect(wrapper.getAttribute('aria-label')).toBe('Whiskey One Alfa Whiskey Slash Papa');
+    expect(wrapper.title).toBe('Whiskey One Alfa Whiskey Slash Papa');
+  });
+
   test('updates when connected text or nested text changes', async () => {
     const element = insert('W1AW');
     element.textContent = 'SM8AYA/5';

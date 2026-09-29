@@ -30,7 +30,7 @@ Options can be set as attributes in the `<script>` tag.
 ## Supported call signs and dynamic content
 The parser supports a 1–3 character alphanumeric prefix, one area digit, and a 1–3 letter suffix, optionally followed by `/0`–`/9`, `/P`, `/M`, `/MM`, `/AM`, or `/QRP`. Explicit tags accept lowercase text and display it in uppercase. Unsupported formats remain visible unchanged; arbitrary text inside a tag is never truncated to a partial match.
 
-Automatic detection is deliberately uppercase-only and matches complete tokens, including next to punctuation. It skips existing call-sign elements, code/preformatted blocks, scripts, styles, form controls, editable content, SVG, and MathML, including their descendants.
+Automatic detection is deliberately uppercase-only and matches complete tokens, including next to punctuation. It skips existing `<call-sign>` elements; `<script>`, `<style>`, `<code>`, `<pre>`, `<textarea>`, `<select>`, `<option>`, `<noscript>`, and `<template>` elements; SVG and MathML; and elements with a `contenteditable` value other than `false`, including their descendants.
 
 Prefix matching is a heuristic, not proof that a station is licensed. The bundled table is not a complete or continuously updated registry of all ITU assignments or DXCC entities. More-specific entries take priority (for example, `HB0` for Liechtenstein and `XX9` for Macau); other flags reflect the allocated country rather than a precise operating location. Formats such as `EA8/W1AW` and special-event calls outside the grammar are not automatically detected.
 

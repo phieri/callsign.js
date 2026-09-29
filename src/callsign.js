@@ -410,7 +410,10 @@ class Callsign extends HTMLElement {
 
     // Add phonetic information
     if (configuration.phonetic) {
-      const phonetic = Callsign.getPhonetics(parsedCallsign.raw);
+      const phonetic = parsedCallsign.raw
+        .split('/')
+        .map((part) => Callsign.getPhonetics(part))
+        .join(' Slash ');
       wrapper.setAttribute('role', 'img');
       wrapper.setAttribute('aria-label', phonetic);
       wrapper.setAttribute('title', phonetic);

@@ -329,6 +329,9 @@ function parseCallsign(text) {
  */
 function shouldSkipTextNode(node) {
   let parent = node.parentElement;
+  if (!parent) {
+    return true;
+  }
   while (parent) {
     if (SKIPPED_TEXT_NODE_TAGS.has(parent.tagName.toUpperCase()) ||
         (parent.hasAttribute('contenteditable') &&
@@ -337,7 +340,7 @@ function shouldSkipTextNode(node) {
     }
     parent = parent.parentElement;
   }
-  return !node.parentElement;
+  return false;
 }
 
 /**
@@ -352,13 +355,13 @@ function getConfig() {
       return config;
     }
 
-    const ds = script.dataset;
+    const { dataset } = script;
     config = {
-      flag: getBooleanConfigValue(ds, 'flag', DEFAULT_CONFIG.flag),
-      monospace: getBooleanConfigValue(ds, 'monospace', DEFAULT_CONFIG.monospace),
-      phonetic: getBooleanConfigValue(ds, 'phonetic', DEFAULT_CONFIG.phonetic),
-      search: ds.search === 'true',
-      cssPath: sanitizeCssPath(ds.cssPath)
+      flag: getBooleanConfigValue(dataset, 'flag', DEFAULT_CONFIG.flag),
+      monospace: getBooleanConfigValue(dataset, 'monospace', DEFAULT_CONFIG.monospace),
+      phonetic: getBooleanConfigValue(dataset, 'phonetic', DEFAULT_CONFIG.phonetic),
+      search: getBooleanConfigValue(dataset, 'search', DEFAULT_CONFIG.search),
+      cssPath: sanitizeCssPath(dataset.cssPath)
     };
   }
   return config;
@@ -390,7 +393,7 @@ class Callsign extends HTMLElement {
 
   render() {
     const configuration = getConfig();
-    const parsedCallsign = parseCallsign(this.textContent || '');
+    const parsedCallsign = parseCallsign(this.textContent);
     if (!parsedCallsign) {
       this.shadowRoot.replaceChildren(document.createElement('slot'));
       return;
@@ -402,13 +405,6 @@ class Callsign extends HTMLElement {
       wrapper.classList.add('monospace');
     }
 
-    const parts = [
-      ['prefix', parsedCallsign.prefix],
-      ['digit', parsedCallsign.digit],
-      ['suffix', parsedCallsign.suffix + parsedCallsign.portable]
-    ];
-
-    // Add phonetic information
     if (configuration.phonetic) {
       const phonetic = parsedCallsign.raw
         .split('/')
@@ -419,7 +415,6 @@ class Callsign extends HTMLElement {
       wrapper.setAttribute('title', phonetic);
     }
 
-    // Add country flag
     if (configuration.flag) {
       const flagElement = this.createFlagElement(parsedCallsign.prefix + parsedCallsign.digit);
       if (flagElement) {
@@ -427,7 +422,11 @@ class Callsign extends HTMLElement {
       }
     }
 
-    // Add call sign parts
+    const parts = [
+      ['prefix', parsedCallsign.prefix],
+      ['digit', parsedCallsign.digit],
+      ['suffix', parsedCallsign.suffix + parsedCallsign.portable]
+    ];
     for (const [key, value] of parts) {
       const partElement = document.createElement('span');
       partElement.textContent = value;
@@ -438,7 +437,6 @@ class Callsign extends HTMLElement {
       wrapper.appendChild(partElement);
     }
 
-    // Add stylesheet
     const linkElement = document.createElement('link');
     linkElement.setAttribute('rel', 'stylesheet');
     linkElement.setAttribute('href', configuration.cssPath);
@@ -514,81 +512,77 @@ class Callsign extends HTMLElement {
     if (!document.body) {
       return;
     }
-    const walker = document.createTreeWalker(
-      document.body,
-      NodeFilter.SHOW_TEXT,
-      {
-        acceptNode(node) {
-          if (shouldSkipTextNode(node)) {
-            return NodeFilter.FILTER_REJECT;
-          }
-
-          return SEARCH_REGEX.test(node.textContent || '')
-            ? NodeFilter.FILTER_ACCEPT
-            : NodeFilter.FILTER_REJECT;
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (shouldSkipTextNode(node)) {
+          return NodeFilter.FILTER_REJECT;
         }
+        return SEARCH_REGEX.test(node.textContent)
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT;
       }
-    );
+    });
 
-    const nodesToReplace = [];
+    // Collect first: the tree can't be modified while walking
+    const textNodes = [];
     let currentNode;
-
-    // Collect nodes to replace (can't modify while walking)
     while ((currentNode = walker.nextNode())) {
-      nodesToReplace.push(currentNode);
+      textNodes.push(currentNode);
     }
 
-    // Process each text node
-    for (const node of nodesToReplace) {
-      const text = node.textContent || '';
-      const matches = [];
-      let match;
-      const regex = new RegExp(SEARCH_REGEX.source, 'gu');
-
-      while ((match = regex.exec(text)) !== null) {
-        const callsign = match[1];
-        const parsedCallsign = parseCallsign(callsign);
-        if (parsedCallsign && Callsign.getCountry(parsedCallsign.prefix + parsedCallsign.digit)) {
-          matches.push({
-            callsign,
-            index: match.index,
-            length: callsign.length
-          });
-        }
+    for (const node of textNodes) {
+      const text = node.textContent;
+      const matches = Callsign.findCallsigns(text);
+      if (matches.length > 0) {
+        node.parentNode.replaceChild(buildFragmentWithCallsigns(text, matches), node);
       }
-
-      if (matches.length === 0) {
-        continue;
-      }
-
-      const parent = node.parentNode;
-      const fragment = document.createDocumentFragment();
-      let lastIndex = 0;
-
-      for (const matchInfo of matches) {
-        // Add text before the call sign
-        if (matchInfo.index > lastIndex) {
-          fragment.appendChild(
-            document.createTextNode(text.substring(lastIndex, matchInfo.index))
-          );
-        }
-
-        // Create call-sign element
-        const callsignElement = document.createElement('call-sign');
-        callsignElement.textContent = matchInfo.callsign;
-        fragment.appendChild(callsignElement);
-
-        lastIndex = matchInfo.index + matchInfo.length;
-      }
-
-      // Add remaining text
-      if (lastIndex < text.length) {
-        fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
-      }
-
-      parent.replaceChild(fragment, node);
     }
   }
+
+  /**
+   * Finds call signs with a known country prefix in a text.
+   * @param {string} text The text to scan.
+   * @returns {{callsign: string, index: number}[]}
+   */
+  static findCallsigns(text) {
+    const matches = [];
+    const regex = new RegExp(SEARCH_REGEX.source, 'gu');
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const callsign = match[1];
+      const parsedCallsign = parseCallsign(callsign);
+      if (parsedCallsign && Callsign.getCountry(parsedCallsign.prefix + parsedCallsign.digit)) {
+        matches.push({ callsign, index: match.index });
+      }
+    }
+    return matches;
+  }
+}
+
+/**
+ * Splits text around matched call signs, wrapping each in a call-sign element.
+ * @param {string} text The original text.
+ * @param {{callsign: string, index: number}[]} matches Ordered, non-overlapping matches.
+ * @returns {DocumentFragment}
+ */
+function buildFragmentWithCallsigns(text, matches) {
+  const fragment = document.createDocumentFragment();
+  let lastIndex = 0;
+
+  for (const { callsign, index } of matches) {
+    if (index > lastIndex) {
+      fragment.appendChild(document.createTextNode(text.substring(lastIndex, index)));
+    }
+    const callsignElement = document.createElement('call-sign');
+    callsignElement.textContent = callsign;
+    fragment.appendChild(callsignElement);
+    lastIndex = index + callsign.length;
+  }
+
+  if (lastIndex < text.length) {
+    fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+  }
+  return fragment;
 }
 
 // Build reverse prefix→ISO map for O(1) lookups
